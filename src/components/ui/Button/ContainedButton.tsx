@@ -1,4 +1,3 @@
-import type { FC } from 'react';
 import type { ButtonPropsWithoutVariant } from './types';
 import { styled } from '@mui/material/styles';
 import { BaseButton } from './BaseButton';
@@ -18,6 +17,6 @@ const StyledContainedButton = styled(BaseButton)<MUIButtonProps>(
   })
 );
 
-export const ContainedButton: FC<ButtonPropsWithoutVariant> = (props) => {
+export const ContainedButton = (props: ButtonPropsWithoutVariant) => {
   return <StyledContainedButton variant="contained" {...props} />;
 };

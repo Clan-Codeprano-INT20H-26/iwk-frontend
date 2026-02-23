@@ -1,4 +1,3 @@
-import type { FC } from 'react';
 import { BaseButton } from './BaseButton';
 import type { ButtonProps as MUIButtonProps } from '@mui/material/Button';
 import type { ButtonPropsWithoutVariant } from './types';
@@ -18,6 +17,6 @@ const StyledTextButton = styled(BaseButton)<MUIButtonProps>(
   })
 );
 
-export const TextButton: FC<ButtonPropsWithoutVariant> = (props) => {
+export const TextButton = (props: ButtonPropsWithoutVariant) => {
   return <StyledTextButton variant="text" {...props} />;
 };

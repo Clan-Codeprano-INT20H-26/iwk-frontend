@@ -10,7 +10,7 @@ import { getCookie } from '@/lib/utils/getCookie';
 const AuthLayout = () => {
   return (
     <>
-      <Box sx={{ position: 'absolute', top: '50px', left: '40px' }}>
+      <Box sx={{ position: 'absolute', top: '25px', left: '30px' }}>
         <Link to="/">
           <img src="/logo.png" alt="logo" width={80} height={30} />
         </Link>

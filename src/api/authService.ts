@@ -6,6 +6,10 @@ import {
   sessionMaxAge,
 } from '@/constants/sessionMaxAge';
 
+interface UserResponse extends User {
+  token: string;
+}
+
 export class AuthService {
   private static instance: AuthService;
 
@@ -21,13 +25,13 @@ export class AuthService {
     password: string,
     isRememberMe: boolean
   ): Promise<User> {
-    const { data } = await api.post<User>('/login', {
+    const { data } = await api.post<UserResponse>('/login', {
       email,
       password,
     });
     setCookie(
       'token',
-      data.accessToken,
+      data.token,
       isRememberMe ? rememberMeSessionMaxAge : sessionMaxAge
     );
     return data;
@@ -38,12 +42,12 @@ export class AuthService {
     password: string,
     username: string
   ): Promise<User> {
-    const { data } = await api.post<User>('/register', {
+    const { data } = await api.post<UserResponse>('/register', {
       email,
       password,
       username,
     });
-    setCookie('token', data.accessToken);
+    setCookie('token', data.token);
     return data;
   }
 

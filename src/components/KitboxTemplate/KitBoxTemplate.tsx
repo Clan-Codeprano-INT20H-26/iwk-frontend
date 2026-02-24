@@ -8,9 +8,9 @@ export const KitBoxTemplate = () => {
         <Card sx={{maxWidth: '200px', backgroundColor:'#FFFFF'}}>
             <CardMedia sx={{borderRadius:"10px"}} component="img" width="100%" alt="kit box img" image="/sign-up.png"/>
             <CardContent>
-                <Typography sx={{fontSize:'15px'}} variant="h3">Pilates Essentials Kit</Typography>
-                <Typography variant="caption">Author: Ruban Alex</Typography>
-                <Typography sx={{fontSize:'15px', color: "#3730A3"}}  variant="h3">$198.00</Typography>
+                <Typography sx={{fontSize:'15px', mb: '5px'}} variant="h3">Pilates Essentials Kit</Typography>
+                <Typography  variant="caption">Author: Ruban Alex</Typography>
+                <Typography sx={{mt:'5px', fontSize:'15px', color: "#3730A3"}}  variant="h3">$198.00</Typography>
             </CardContent>
         </Card>
     )

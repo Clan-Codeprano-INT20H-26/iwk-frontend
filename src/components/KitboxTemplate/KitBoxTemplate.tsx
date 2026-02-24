@@ -1,14 +1,17 @@
-import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import c from "./KitBoxTemplate.module.css"
+import Card from "@mui/material/Card"
+import CardMedia from "@mui/material/CardMedia"
+import CardContent from "@mui/material/CardContent"
 
 export const KitBoxTemplate = () => {
     return(
-        <Stack direction="column" sx={{width: 'calc((100% - 240px) / 6)'}} gap={2}>
-            <img className={c.kit_img} src="/sign-up.png" alt="kit box img" />
-            <Typography sx={{fontSize:'15px'}} variant="h3">Pilates Essentials Kit</Typography>
-            <p>Author: Ruban Alex</p>
-            <Typography sx={{fontSize:'15px'}}  variant="h3">$198.00</Typography>
-        </Stack>
+        <Card sx={{maxWidth: '200px', backgroundColor:'#FFFFF'}}>
+            <CardMedia sx={{borderRadius:"10px"}} component="img" width="100%" alt="kit box img" image="/sign-up.png"/>
+            <CardContent>
+                <Typography sx={{fontSize:'15px'}} variant="h3">Pilates Essentials Kit</Typography>
+                <Typography variant="caption">Author: Ruban Alex</Typography>
+                <Typography sx={{fontSize:'15px', color: "#3730A3"}}  variant="h3">$198.00</Typography>
+            </CardContent>
+        </Card>
     )
 }

@@ -8,12 +8,16 @@ interface UserState {
   user: User | null;
   isLoading: boolean;
   setUser: (user: User) => void;
-  login: (email: string, password: string) => Promise<void>;
+  login: (
+    email: string,
+    password: string,
+    isRememberMe: boolean
+  ) => Promise<User | null>;
   register: (
     email: string,
     password: string,
     username: string
-  ) => Promise<void>;
+  ) => Promise<User | null>;
   logout: () => Promise<void>;
 }
 
@@ -29,13 +33,15 @@ export const useUserStore = create<UserState>((set) => ({
     set({ user });
   },
 
-  login: async (email: string, password: string) => {
+  login: async (email: string, password: string, isRememberMe: boolean) => {
     set({ isLoading: true });
     try {
-      const user = await authService.login(email, password);
+      const user = await authService.login(email, password, isRememberMe);
       set({ user });
+      return user;
     } catch (error) {
       console.error(error);
+      return null;
     } finally {
       set({ isLoading: false });
     }
@@ -46,8 +52,10 @@ export const useUserStore = create<UserState>((set) => ({
     try {
       const user = await authService.register(email, password, username);
       set({ user });
+      return user;
     } catch (error) {
       console.error(error);
+      return null;
     } finally {
       set({ isLoading: false });
     }

@@ -33,9 +33,9 @@ const SignUpPage = () => {
   const onSubmit = async (data: SignUpSchema) => {
     const { username, email, password } = data;
 
-    await signUp(username, email, password).then(() => {
-      navigate({ to: '/profile' });
-    });
+    await signUp(username, email, password).then(
+      (res) => res && navigate({ to: '/profile', replace: true })
+    );
   };
 
   return (
@@ -63,7 +63,6 @@ const SignUpPage = () => {
           noValidate
           autoComplete="off"
           gap={2}
-          width="100%"
           maxWidth={400}
           onSubmit={handleSubmit(onSubmit)}
         >

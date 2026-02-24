@@ -1,6 +1,10 @@
-import type { User } from '@/types/user';
 import { api } from './authAxiosInstance';
+import type { User } from '@/types/user';
 import { setCookie } from '@/lib/utils/setCookie';
+import {
+  rememberMeSessionMaxAge,
+  sessionMaxAge,
+} from '@/constants/sessionMaxAge';
 
 export class AuthService {
   private static instance: AuthService;
@@ -12,9 +16,20 @@ export class AuthService {
     AuthService.instance = this;
   }
 
-  async login(email: string, password: string): Promise<User> {
-    const { data } = await api.post<User>('/login', { email, password });
-    setCookie('token', data.accessToken);
+  async login(
+    email: string,
+    password: string,
+    isRememberMe: boolean
+  ): Promise<User> {
+    const { data } = await api.post<User>('/login', {
+      email,
+      password,
+    });
+    setCookie(
+      'token',
+      data.accessToken,
+      isRememberMe ? rememberMeSessionMaxAge : sessionMaxAge
+    );
     return data;
   }
 

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProfileIndexRouteImport } from './routes/profile/index'
+import { Route as KitsKitIdRouteImport } from './routes/kits/$kitId'
 import { Route as AuthSignUpRouteImport } from './routes/auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
 
@@ -30,6 +31,11 @@ const ProfileIndexRoute = ProfileIndexRouteImport.update({
   path: '/profile/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KitsKitIdRoute = KitsKitIdRouteImport.update({
+  id: '/kits/$kitId',
+  path: '/kits/$kitId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthSignUpRoute = AuthSignUpRouteImport.update({
   id: '/sign-up',
   path: '/sign-up',
@@ -46,6 +52,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteWithChildren
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
+  '/kits/$kitId': typeof KitsKitIdRoute
   '/profile/': typeof ProfileIndexRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRouteWithChildren
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
+  '/kits/$kitId': typeof KitsKitIdRoute
   '/profile': typeof ProfileIndexRoute
 }
 export interface FileRoutesById {
@@ -61,25 +69,40 @@ export interface FileRoutesById {
   '/auth': typeof AuthRouteWithChildren
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
+  '/kits/$kitId': typeof KitsKitIdRoute
   '/profile/': typeof ProfileIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/auth/sign-in' | '/auth/sign-up' | '/profile/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/auth/sign-in'
+    | '/auth/sign-up'
+    | '/kits/$kitId'
+    | '/profile/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/auth/sign-in' | '/auth/sign-up' | '/profile'
+  to:
+    | '/'
+    | '/auth'
+    | '/auth/sign-in'
+    | '/auth/sign-up'
+    | '/kits/$kitId'
+    | '/profile'
   id:
     | '__root__'
     | '/'
     | '/auth'
     | '/auth/sign-in'
     | '/auth/sign-up'
+    | '/kits/$kitId'
     | '/profile/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
+  KitsKitIdRoute: typeof KitsKitIdRoute
   ProfileIndexRoute: typeof ProfileIndexRoute
 }
 
@@ -104,6 +127,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile/'
       preLoaderRoute: typeof ProfileIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kits/$kitId': {
+      id: '/kits/$kitId'
+      path: '/kits/$kitId'
+      fullPath: '/kits/$kitId'
+      preLoaderRoute: typeof KitsKitIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/sign-up': {
@@ -138,6 +168,7 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
+  KitsKitIdRoute: KitsKitIdRoute,
   ProfileIndexRoute: ProfileIndexRoute,
 }
 export const routeTree = rootRouteImport

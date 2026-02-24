@@ -6,6 +6,7 @@ const authService = new AuthService();
 
 interface UserState {
   user: User | null;
+  isLoading: boolean;
   setUser: (user: User) => void;
   login: (email: string, password: string) => Promise<void>;
   register: (
@@ -18,6 +19,7 @@ interface UserState {
 
 const initialState = {
   user: null,
+  isLoading: false,
 };
 
 export const useUserStore = create<UserState>((set) => ({
@@ -28,17 +30,38 @@ export const useUserStore = create<UserState>((set) => ({
   },
 
   login: async (email: string, password: string) => {
-    const user = await authService.login(email, password);
-    set({ user });
+    set({ isLoading: true });
+    try {
+      const user = await authService.login(email, password);
+      set({ user });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      set({ isLoading: false });
+    }
   },
 
   register: async (email: string, password: string, username: string) => {
-    const user = await authService.register(email, password, username);
-    set({ user });
+    set({ isLoading: true });
+    try {
+      const user = await authService.register(email, password, username);
+      set({ user });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      set({ isLoading: false });
+    }
   },
 
   logout: async () => {
-    await authService.logout();
-    set({ user: null });
+    set({ isLoading: true });
+    try {
+      await authService.logout();
+      set({ user: null });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      set({ isLoading: false });
+    }
   },
 }));

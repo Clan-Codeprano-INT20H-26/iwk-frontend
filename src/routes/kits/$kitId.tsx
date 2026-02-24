@@ -1,10 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router';
 
-const RouteComponent = () => {
+const KitPage = () => {
   const { kitId } = Route.useParams();
   return <div>Hello, {kitId}!</div>;
 };
 
 export const Route = createFileRoute('/kits/$kitId')({
-  component: RouteComponent,
+  component: KitPage,
 });

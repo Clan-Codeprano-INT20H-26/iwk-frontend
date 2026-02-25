@@ -5,8 +5,10 @@ import { useKitStore } from '@/store/kitStore';
 import Grid from '@mui/material/Grid';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { headerHeight } from '@/constants/headerHeight';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDebounce } from '@/lib/hooks/useDebounce';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 interface SearchParams {
   page?: number;
@@ -21,6 +23,20 @@ const CatalogPage = () => {
   const kits = useKitStore((state) => state.kits);
   const isLoading = useKitStore((state) => state.isLoading);
   const setKits = useKitStore((state) => state.setKits);
+  const totalPages = useKitStore((state) => state.totalPages);
+  const pageNumber = useKitStore((state) => state.pageNumber);
+
+  const isEmpty = kits.length === 0;
+
+  const handleParamsChange = useCallback(
+    (page?: number) => {
+      navigate({
+        to: '/',
+        search: { page, ...(debouncedValue && { searchTerm: debouncedValue }) },
+      });
+    },
+    [navigate, debouncedValue]
+  );
 
   const handleSearch = (searchTerm: string) => {
     setSearchTerm(searchTerm);
@@ -29,32 +45,49 @@ const CatalogPage = () => {
 
   useEffect(() => {
     if (debouncedValue !== debouncedValueRef.current) {
-      navigate({
-        to: '/',
-        ...(debouncedValue && { search: { searchTerm: debouncedValue } }),
-      });
+      handleParamsChange();
     }
     debouncedValueRef.current = debouncedValue;
-  }, [debouncedValue, navigate, setKits]);
+  }, [debouncedValue, handleParamsChange, setKits]);
 
   return (
     <>
       <Header currentPage="catalog" handleSearch={handleSearch} />
-      <Grid
-        container
-        spacing={5}
+      <Stack
+        justifyContent="space-between"
         sx={{ padding: 4, minHeight: `calc(100vh - ${headerHeight})` }}
       >
         {isLoading || isDebouncing ? (
           <Loader size={80} sx={{ m: 'auto' }} />
+        ) : isEmpty ? (
+          <Stack
+            alignItems="center"
+            justifyContent="center"
+            sx={{ flex: 1, py: 8, color: 'text.secondary' }}
+          >
+            No kits found. Try a different search or check back later.
+          </Stack>
         ) : (
-          kits.map((kit) => (
-            <Grid size={2} key={kit.id}>
-              <KitCard {...kit} />
-            </Grid>
-          ))
+          <Grid container spacing={5}>
+            {kits.map((kit) => (
+              <Grid size={2} key={kit.id}>
+                <KitCard {...kit} />
+              </Grid>
+            ))}
+          </Grid>
         )}
-      </Grid>
+        <Pagination
+          color="primary"
+          shape="rounded"
+          page={pageNumber}
+          count={totalPages}
+          onChange={(_, value) => handleParamsChange(value)}
+          sx={{
+            alignSelf: 'center',
+            visibility: isEmpty ? 'hidden' : 'visible',
+          }}
+        />
+      </Stack>
     </>
   );
 };
@@ -65,7 +98,7 @@ export const Route = createFileRoute('/')({
     const { page, searchTerm }: SearchParams = params.location.search;
     const { getKits } = useKitStore.getState();
     await getKits({
-      Page: page,
+      PageNumber: page,
       SearchTerm: searchTerm,
     });
   },

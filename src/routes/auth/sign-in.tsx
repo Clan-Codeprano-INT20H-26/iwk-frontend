@@ -22,6 +22,7 @@ const SignInPage = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<SignInSchema>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -34,9 +35,11 @@ const SignInPage = () => {
   const onSubmit = async (data: SignInSchema) => {
     const { email, password } = data;
 
-    await signIn(email, password, isRememberMe).then(
-      (res) => res && navigate({ to: '/profile', replace: true })
-    );
+    await signIn(email, password, isRememberMe)
+      .then(() => navigate({ to: '/profile', replace: true }))
+      .catch((error) => {
+        setError('password', { message: error.response.data.message });
+      });
   };
 
   return (
@@ -75,7 +78,7 @@ const SignInPage = () => {
             label="Password"
             required
             type="password"
-            placeholder="at least 6 characters"
+            placeholder="at least 8 characters"
             errorMessage={errors.password?.message}
             {...register('password')}
           />

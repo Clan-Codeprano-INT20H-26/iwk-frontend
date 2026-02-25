@@ -9,6 +9,7 @@ import { IconButton } from './ui/IconButton';
 import { ContainedButton } from './ui/Button';
 import { SearchBar } from './Searchbar';
 import { useLocalStorage } from '@/lib/hooks/useLocalStorage';
+import { headerHeight } from '@/constants/headerHeight';
 
 interface HeaderProps {
   currentPage: string;
@@ -20,7 +21,7 @@ const StyledContainer = styled(Stack)(({ theme }) => ({
   justifyContent: 'space-between',
   borderBottom: `1px solid ${theme.palette.divider}`,
   padding: '20px 30px',
-  height: '80px',
+  height: headerHeight,
 }));
 
 export const Header = ({ currentPage }: HeaderProps) => {

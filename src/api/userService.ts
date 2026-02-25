@@ -6,8 +6,9 @@ import {
   sessionMaxAge,
 } from '@/constants/sessionMaxAge';
 
-interface UserResponse extends User {
+interface UserResponse {
   token: string;
+  user: User;
 }
 
 export class UserService {
@@ -34,7 +35,7 @@ export class UserService {
       data.token,
       isRememberMe ? rememberMeSessionMaxAge : sessionMaxAge
     );
-    return data;
+    return data.user;
   }
 
   async register(
@@ -47,12 +48,12 @@ export class UserService {
       password,
       username,
     });
-    setCookie('token', data.token);
-    return data;
+    setCookie('token', data.token, sessionMaxAge);
+    return data.user;
   }
 
   async getUser(): Promise<User> {
-    const { data: user } = await api.get<User>('/profile');
+    const { data: user } = await api.get<User>('/auth/profile');
     return user;
   }
 }

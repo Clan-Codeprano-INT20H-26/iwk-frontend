@@ -10,7 +10,7 @@ interface KitResponse {
 }
 
 export interface GetKitsParams {
-  Page: number;
+  PageNumber: number;
   SearchTerm: string;
 }
 

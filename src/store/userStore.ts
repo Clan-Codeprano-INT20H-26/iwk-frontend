@@ -1,13 +1,15 @@
 import { create } from 'zustand';
-import { AuthService } from '@/api/authService';
+import { UserService } from '@/api/userService';
 import type { User } from '@/types/user';
+import { setCookie } from '@/lib/utils/setCookie';
 
-const authService = new AuthService();
+const userService = new UserService();
 
 interface UserState {
   user: User | null;
   isLoading: boolean;
   setUser: (user: User) => void;
+  getProfile: () => Promise<User | null>;
   login: (
     email: string,
     password: string,
@@ -33,10 +35,24 @@ export const useUserStore = create<UserState>((set) => ({
     set({ user });
   },
 
+  getProfile: async () => {
+    set({ isLoading: true });
+    try {
+      const user = await userService.getUser();
+      set({ user });
+      return user;
+    } catch (error) {
+      console.error(error);
+      return null;
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
   login: async (email: string, password: string, isRememberMe: boolean) => {
     set({ isLoading: true });
     try {
-      const user = await authService.login(email, password, isRememberMe);
+      const user = await userService.login(email, password, isRememberMe);
       set({ user });
       return user;
     } catch (error) {
@@ -50,7 +66,7 @@ export const useUserStore = create<UserState>((set) => ({
   register: async (email: string, password: string, username: string) => {
     set({ isLoading: true });
     try {
-      const user = await authService.register(email, password, username);
+      const user = await userService.register(email, password, username);
       set({ user });
       return user;
     } catch (error) {
@@ -62,14 +78,7 @@ export const useUserStore = create<UserState>((set) => ({
   },
 
   logout: async () => {
-    set({ isLoading: true });
-    try {
-      await authService.logout();
-      set({ user: null });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      set({ isLoading: false });
-    }
+    setCookie('token', '');
+    set({ user: null });
   },
 }));

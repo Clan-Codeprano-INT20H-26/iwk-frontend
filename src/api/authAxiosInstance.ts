@@ -1,14 +1,14 @@
 import axios, {
   type AxiosInstance,
   type InternalAxiosRequestConfig,
-} from "axios";
-import { getCookie } from "@/lib/utils/getCookie";
+} from 'axios';
+import { getCookie } from '@/lib/utils/getCookie';
 
 const requestInterceptor = async (config: InternalAxiosRequestConfig) => {
-  const token = getCookie("token");
+  const token = getCookie('token');
 
   if (token) {
-    config.headers.Authorization = token;
+    config.headers.Authorization = `Bearer ${token}`;
   }
 
   return config;

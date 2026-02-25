@@ -33,8 +33,8 @@ const SignUpPage = () => {
   const onSubmit = async (data: SignUpSchema) => {
     const { username, email, password } = data;
 
-    await signUp(username, email, password).then(
-      (res) => res && navigate({ to: '/profile', replace: true })
+    await signUp(username, email, password).then(() =>
+      navigate({ to: '/profile', replace: true })
     );
   };
 

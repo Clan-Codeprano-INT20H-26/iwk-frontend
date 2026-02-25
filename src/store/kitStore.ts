@@ -6,8 +6,8 @@ const kitService = new KitService();
 
 interface KitState {
   kits: Kit[];
-  getKits: () => Promise<Kit[]>;
-  getKit: (id: string) => Promise<Kit | null>;
+  getKits: () => Promise<void>;
+  getKit: (id: string) => Promise<Kit>;
   isLoading: boolean;
 }
 
@@ -24,10 +24,8 @@ export const useKitStore = create<KitState>((set) => ({
     try {
       const { items } = await kitService.getKits();
       set({ kits: items });
-      return items;
     } catch (error) {
-      console.error(error);
-      return [];
+      return Promise.reject(error);
     } finally {
       set({ isLoading: false });
     }
@@ -39,8 +37,7 @@ export const useKitStore = create<KitState>((set) => ({
       const kit = await kitService.getKit(id);
       return kit;
     } catch (error) {
-      console.error(error);
-      return null;
+      return Promise.reject(error);
     } finally {
       set({ isLoading: false });
     }

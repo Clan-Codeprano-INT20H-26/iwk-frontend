@@ -75,7 +75,7 @@ const SignInPage = () => {
             label="Password"
             required
             type="password"
-            placeholder="at least 6 characters"
+            placeholder="at least 8 characters"
             errorMessage={errors.password?.message}
             {...register('password')}
           />

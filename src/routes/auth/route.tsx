@@ -1,11 +1,11 @@
 import Box from '@mui/material/Box';
 import {
-  createFileRoute,
   Link,
   Outlet,
+  createFileRoute,
   redirect,
 } from '@tanstack/react-router';
-import { getCookie } from '@/lib/utils/getCookie';
+import { useUserStore } from '@/store/userStore';
 
 const AuthLayout = () => {
   return (
@@ -32,8 +32,8 @@ const AuthLayout = () => {
 export const Route = createFileRoute('/auth')({
   component: AuthLayout,
   loader: async () => {
-    const token = getCookie('token');
-    if (token) {
+    const { user } = useUserStore.getState();
+    if (user) {
       throw redirect({ to: '/profile' });
     }
   },

@@ -13,7 +13,7 @@ export const KitCard = ({ id, name, price, seller, images }: KitCardProps) => {
   const navigate = useNavigate();
 
   return (
-    <Card sx={{ maxWidth: '400px' }}>
+    <Card sx={{ maxWidth: '450px' }}>
       <CardActionArea
         disableRipple
         disableTouchRipple

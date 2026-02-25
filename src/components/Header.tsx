@@ -13,18 +13,20 @@ import { useCart } from '@/lib/hooks/useCart';
 
 interface HeaderProps {
   currentPage: string;
+  handleSearch?: (searchTerm: string) => void;
 }
 
 const StyledContainer = styled(Stack)(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
+  position: 'relative',
   borderBottom: `1px solid ${theme.palette.divider}`,
   padding: '20px 30px',
   height: headerHeight,
 }));
 
-export const Header = ({ currentPage }: HeaderProps) => {
+export const Header = ({ currentPage, handleSearch }: HeaderProps) => {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
   const { items } = useCart();
@@ -42,11 +44,18 @@ export const Header = ({ currentPage }: HeaderProps) => {
         fontFamily='"Jersey 20", cursive'
         fontWeight={400}
         textTransform="uppercase"
+        sx={{
+          position: 'absolute',
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }}
       >
         {currentPage}
       </Typography>
       <Stack direction="row" alignItems="center" gap="20px">
-        <SearchBar />
+        {handleSearch && (
+          <SearchBar onChange={(e) => handleSearch(e.target.value)} />
+        )}
         <Stack direction="row" alignItems="center" gap="15px">
           <IconButton onClick={() => navigate({ to: '/cart' })}>
             <ShoppingBasketOutlinedIcon

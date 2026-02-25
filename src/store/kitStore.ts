@@ -1,29 +1,39 @@
 import { create } from 'zustand';
-import { KitService } from '@/api/kitService';
+import { KitService, type GetKitsParams } from '@/api/kitService';
 import type { Kit } from '@/types/kit';
 
 const kitService = new KitService();
 
 interface KitState {
   kits: Kit[];
-  getKits: () => Promise<void>;
+  setKits: (kits: Kit[]) => void;
+  getKits: (params?: Partial<GetKitsParams>) => Promise<void>;
   getKit: (id: string) => Promise<Kit>;
   isLoading: boolean;
+  totalPages: number;
+  pageNumber: number;
 }
 
 const initialState = {
   kits: [],
+  totalPages: 1,
+  pageNumber: 1,
   isLoading: false,
 };
 
 export const useKitStore = create<KitState>((set) => ({
   ...initialState,
 
-  getKits: async () => {
+  setKits: (kits: Kit[]) => {
+    set({ kits });
+  },
+
+  getKits: async (params?: Partial<GetKitsParams>) => {
     set({ isLoading: true });
     try {
-      const { items } = await kitService.getKits();
-      set({ kits: items });
+      const { items, totalPages, pageNumber } =
+        await kitService.getKits(params);
+      set({ kits: items, totalPages, pageNumber });
     } catch (error) {
       return Promise.reject(error);
     } finally {

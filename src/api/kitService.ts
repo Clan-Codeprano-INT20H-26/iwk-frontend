@@ -9,6 +9,11 @@ interface KitResponse {
   pageSize: number;
 }
 
+export interface GetKitsParams {
+  Page: number;
+  SearchTerm: string;
+}
+
 export class KitService {
   private static instance: KitService;
 
@@ -19,8 +24,19 @@ export class KitService {
     KitService.instance = this;
   }
 
-  async getKits(): Promise<KitResponse> {
-    const { data } = await api.get<KitResponse>('/Kit');
+  async getKits(params?: Partial<GetKitsParams>): Promise<KitResponse> {
+    const queryParams = new URLSearchParams();
+
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (!value) return;
+        queryParams.set(key, value.toString());
+      });
+    }
+
+    const { data } = await api.get<KitResponse>(
+      `/Kit?${queryParams.toString()}`
+    );
     return data;
   }
 

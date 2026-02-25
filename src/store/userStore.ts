@@ -8,18 +8,18 @@ const userService = new UserService();
 interface UserState {
   user: User | null;
   isLoading: boolean;
-  setUser: (user: User) => void;
-  getProfile: () => Promise<User | null>;
+  setUser: (user: User | null) => void;
+  getProfile: () => Promise<void>;
   login: (
     email: string,
     password: string,
     isRememberMe: boolean
-  ) => Promise<User | null>;
+  ) => Promise<void>;
   register: (
     email: string,
     password: string,
     username: string
-  ) => Promise<User | null>;
+  ) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -31,7 +31,7 @@ const initialState = {
 export const useUserStore = create<UserState>((set) => ({
   ...initialState,
 
-  setUser: (user: User) => {
+  setUser: (user: User | null) => {
     set({ user });
   },
 
@@ -40,10 +40,8 @@ export const useUserStore = create<UserState>((set) => ({
     try {
       const user = await userService.getUser();
       set({ user });
-      return user;
     } catch (error) {
-      console.error(error);
-      return null;
+      return Promise.reject(error);
     } finally {
       set({ isLoading: false });
     }
@@ -54,10 +52,8 @@ export const useUserStore = create<UserState>((set) => ({
     try {
       const user = await userService.login(email, password, isRememberMe);
       set({ user });
-      return user;
     } catch (error) {
-      console.error(error);
-      return null;
+      return Promise.reject(error);
     } finally {
       set({ isLoading: false });
     }
@@ -68,17 +64,15 @@ export const useUserStore = create<UserState>((set) => ({
     try {
       const user = await userService.register(email, password, username);
       set({ user });
-      return user;
     } catch (error) {
-      console.error(error);
-      return null;
+      return Promise.reject(error);
     } finally {
       set({ isLoading: false });
     }
   },
 
   logout: async () => {
-    setCookie('token', '');
+    setCookie('token', '', 0);
     set({ user: null });
   },
 }));

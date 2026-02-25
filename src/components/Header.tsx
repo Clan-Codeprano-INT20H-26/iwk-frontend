@@ -8,8 +8,8 @@ import { useNavigate } from '@tanstack/react-router';
 import { IconButton } from './ui/IconButton';
 import { ContainedButton } from './ui/Button';
 import { SearchBar } from './Searchbar';
-import { useLocalStorage } from '@/lib/hooks/useLocalStorage';
 import { headerHeight } from '@/constants/headerHeight';
+import { useCart } from '@/lib/hooks/useCart';
 
 interface HeaderProps {
   currentPage: string;
@@ -27,7 +27,7 @@ const StyledContainer = styled(Stack)(({ theme }) => ({
 export const Header = ({ currentPage }: HeaderProps) => {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
-  const { value: cart } = useLocalStorage('cart', []);
+  const { items } = useCart();
 
   return (
     <StyledContainer>
@@ -51,7 +51,7 @@ export const Header = ({ currentPage }: HeaderProps) => {
           <IconButton onClick={() => navigate({ to: '/cart' })}>
             <ShoppingBasketOutlinedIcon
               fontSize="medium"
-              color={cart.length > 0 ? 'primary' : 'action'}
+              color={items.length > 0 ? 'primary' : 'action'}
             />
           </IconButton>
           {user ? (

@@ -10,14 +10,14 @@ interface UserResponse extends User {
   token: string;
 }
 
-export class AuthService {
-  private static instance: AuthService;
+export class UserService {
+  private static instance: UserService;
 
   constructor() {
-    if (AuthService.instance) {
-      return AuthService.instance;
+    if (UserService.instance) {
+      return UserService.instance;
     }
-    AuthService.instance = this;
+    UserService.instance = this;
   }
 
   async login(
@@ -25,7 +25,7 @@ export class AuthService {
     password: string,
     isRememberMe: boolean
   ): Promise<User> {
-    const { data } = await api.post<UserResponse>('/login', {
+    const { data } = await api.post<UserResponse>('/auth/login', {
       email,
       password,
     });
@@ -42,7 +42,7 @@ export class AuthService {
     password: string,
     username: string
   ): Promise<User> {
-    const { data } = await api.post<UserResponse>('/register', {
+    const { data } = await api.post<UserResponse>('/auth/register', {
       email,
       password,
       username,
@@ -51,7 +51,8 @@ export class AuthService {
     return data;
   }
 
-  async logout(): Promise<void> {
-    await api.post('/logout');
+  async getUser(): Promise<User> {
+    const { data: user } = await api.get<User>('/profile');
+    return user;
   }
 }

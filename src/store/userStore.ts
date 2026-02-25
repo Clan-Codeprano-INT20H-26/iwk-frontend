@@ -8,7 +8,7 @@ const userService = new UserService();
 interface UserState {
   user: User | null;
   isLoading: boolean;
-  setUser: (user: User) => void;
+  setUser: (user: User | null) => void;
   getProfile: () => Promise<User | null>;
   login: (
     email: string,
@@ -31,7 +31,7 @@ const initialState = {
 export const useUserStore = create<UserState>((set) => ({
   ...initialState,
 
-  setUser: (user: User) => {
+  setUser: (user: User | null) => {
     set({ user });
   },
 
@@ -78,7 +78,7 @@ export const useUserStore = create<UserState>((set) => ({
   },
 
   logout: async () => {
-    setCookie('token', '');
+    setCookie('token', '', 0);
     set({ user: null });
   },
 }));

@@ -9,17 +9,17 @@ interface UserState {
   user: User | null;
   isLoading: boolean;
   setUser: (user: User | null) => void;
-  getProfile: () => Promise<User | null>;
+  getProfile: () => Promise<void>;
   login: (
     email: string,
     password: string,
     isRememberMe: boolean
-  ) => Promise<User | null>;
+  ) => Promise<void>;
   register: (
     email: string,
     password: string,
     username: string
-  ) => Promise<User | null>;
+  ) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -40,10 +40,8 @@ export const useUserStore = create<UserState>((set) => ({
     try {
       const user = await userService.getUser();
       set({ user });
-      return user;
     } catch (error) {
-      console.error(error);
-      return null;
+      return Promise.reject(error);
     } finally {
       set({ isLoading: false });
     }
@@ -54,10 +52,8 @@ export const useUserStore = create<UserState>((set) => ({
     try {
       const user = await userService.login(email, password, isRememberMe);
       set({ user });
-      return user;
     } catch (error) {
-      console.error(error);
-      return null;
+      return Promise.reject(error);
     } finally {
       set({ isLoading: false });
     }
@@ -68,10 +64,8 @@ export const useUserStore = create<UserState>((set) => ({
     try {
       const user = await userService.register(email, password, username);
       set({ user });
-      return user;
     } catch (error) {
-      console.error(error);
-      return null;
+      return Promise.reject(error);
     } finally {
       set({ isLoading: false });
     }

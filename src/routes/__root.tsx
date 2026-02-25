@@ -21,10 +21,8 @@ export const Route = createRootRoute({
     const { user, getProfile, logout } = useUserStore.getState();
 
     if (!user && token) {
-      await getProfile().then((user) => {
-        if (!user) {
-          logout();
-        }
+      await getProfile().catch(() => {
+        logout();
       });
     }
   },

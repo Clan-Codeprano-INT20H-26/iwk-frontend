@@ -1,18 +1,10 @@
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress, {
+  type CircularProgressProps,
+} from '@mui/material/CircularProgress';
 
-interface LoaderProps {
-  open?: boolean;
-}
-
-export const Loader = ({ open = true }: LoaderProps) => {
+export const Loader = ({ sx, ...props }: CircularProgressProps) => {
   return (
-    <Backdrop
-      open={open}
-      sx={{
-        zIndex: (theme) => theme.zIndex.drawer + 1,
-      }}
-    >
+    <>
       <svg width={0} height={0}>
         <defs>
           <linearGradient
@@ -28,13 +20,14 @@ export const Loader = ({ open = true }: LoaderProps) => {
         </defs>
       </svg>
       <CircularProgress
-        size={120}
         sx={{
           '& .MuiCircularProgress-circle': {
             stroke: 'url(#loader-gradient)',
           },
+          ...sx,
         }}
+        {...props}
       />
-    </Backdrop>
+    </>
   );
 };

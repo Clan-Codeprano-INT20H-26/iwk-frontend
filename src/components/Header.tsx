@@ -13,6 +13,7 @@ import { useCart } from '@/lib/hooks/useCart';
 
 interface HeaderProps {
   currentPage: string;
+  handleSearch?: (searchTerm: string) => void;
 }
 
 const StyledContainer = styled(Stack)(({ theme }) => ({
@@ -24,7 +25,7 @@ const StyledContainer = styled(Stack)(({ theme }) => ({
   height: headerHeight,
 }));
 
-export const Header = ({ currentPage }: HeaderProps) => {
+export const Header = ({ currentPage, handleSearch }: HeaderProps) => {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
   const { items } = useCart();
@@ -46,7 +47,9 @@ export const Header = ({ currentPage }: HeaderProps) => {
         {currentPage}
       </Typography>
       <Stack direction="row" alignItems="center" gap="20px">
-        <SearchBar />
+        {handleSearch && (
+          <SearchBar onChange={(e) => handleSearch(e.target.value)} />
+        )}
         <Stack direction="row" alignItems="center" gap="15px">
           <IconButton onClick={() => navigate({ to: '/cart' })}>
             <ShoppingBasketOutlinedIcon

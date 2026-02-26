@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProfileIndexRouteImport } from './routes/profile/index'
+import { Route as CheckoutIndexRouteImport } from './routes/checkout/index'
 import { Route as CartIndexRouteImport } from './routes/cart/index'
 import { Route as AuthIndexRouteImport } from './routes/auth/index'
 import { Route as KitsKitIdRouteImport } from './routes/kits/$kitId'
@@ -31,6 +32,11 @@ const IndexRoute = IndexRouteImport.update({
 const ProfileIndexRoute = ProfileIndexRouteImport.update({
   id: '/profile/',
   path: '/profile/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutIndexRoute = CheckoutIndexRouteImport.update({
+  id: '/checkout/',
+  path: '/checkout/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CartIndexRoute = CartIndexRouteImport.update({
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/kits/$kitId': typeof KitsKitIdRoute
   '/auth/': typeof AuthIndexRoute
   '/cart/': typeof CartIndexRoute
+  '/checkout/': typeof CheckoutIndexRoute
   '/profile/': typeof ProfileIndexRoute
 }
 export interface FileRoutesByTo {
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/kits/$kitId': typeof KitsKitIdRoute
   '/auth': typeof AuthIndexRoute
   '/cart': typeof CartIndexRoute
+  '/checkout': typeof CheckoutIndexRoute
   '/profile': typeof ProfileIndexRoute
 }
 export interface FileRoutesById {
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/kits/$kitId': typeof KitsKitIdRoute
   '/auth/': typeof AuthIndexRoute
   '/cart/': typeof CartIndexRoute
+  '/checkout/': typeof CheckoutIndexRoute
   '/profile/': typeof ProfileIndexRoute
 }
 export interface FileRouteTypes {
@@ -99,6 +108,7 @@ export interface FileRouteTypes {
     | '/kits/$kitId'
     | '/auth/'
     | '/cart/'
+    | '/checkout/'
     | '/profile/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
     | '/kits/$kitId'
     | '/auth'
     | '/cart'
+    | '/checkout'
     | '/profile'
   id:
     | '__root__'
@@ -118,6 +129,7 @@ export interface FileRouteTypes {
     | '/kits/$kitId'
     | '/auth/'
     | '/cart/'
+    | '/checkout/'
     | '/profile/'
   fileRoutesById: FileRoutesById
 }
@@ -126,6 +138,7 @@ export interface RootRouteChildren {
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   KitsKitIdRoute: typeof KitsKitIdRoute
   CartIndexRoute: typeof CartIndexRoute
+  CheckoutIndexRoute: typeof CheckoutIndexRoute
   ProfileIndexRoute: typeof ProfileIndexRoute
 }
 
@@ -150,6 +163,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile/'
       preLoaderRoute: typeof ProfileIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout/': {
+      id: '/checkout/'
+      path: '/checkout'
+      fullPath: '/checkout/'
+      preLoaderRoute: typeof CheckoutIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cart/': {
@@ -211,6 +231,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRouteRoute: AuthRouteRouteWithChildren,
   KitsKitIdRoute: KitsKitIdRoute,
   CartIndexRoute: CartIndexRoute,
+  CheckoutIndexRoute: CheckoutIndexRoute,
   ProfileIndexRoute: ProfileIndexRoute,
 }
 export const routeTree = rootRouteImport

@@ -3,11 +3,12 @@ import { Header } from '@/components/Header';
 import { OrderSummary } from '@/components/OrderSummary';
 import Stack from '@mui/material/Stack';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { checkoutSchema, type CheckoutSchema } from '@/schema/checkout.schema';
 import { OrderService } from '@/api/orderService';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useCart } from '@/lib/hooks/useCart';
 import { PageLoader } from '@/components/PageLoader';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
@@ -15,14 +16,14 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 const orderService = new OrderService();
 
 const CheckoutPage = () => {
-  const [taxPercent, setTaxPercent] = useState<number>();
-  const [serverError, setServerError] = useState<string | null>(null);
-
-  const { items: cart } = useCart();
   const navigate = useNavigate();
-
   const stripe = useStripe();
   const elements = useElements();
+  const [isLoading, setIsLoading] = useState(false);
+  const [taxPercent, setTaxPercent] = useState<number>();
+  const [mapDialogOpen, setMapDialogOpen] = useState(false);
+
+  const { items: cart } = useCart();
 
   const methods = useForm<CheckoutSchema>({
     resolver: zodResolver(checkoutSchema),
@@ -36,94 +37,97 @@ const CheckoutPage = () => {
   });
 
   const {
-    watch,
-    reset,
+    control,
     formState: { isSubmitting },
   } = methods;
+
+  const latitude = useWatch({ control, name: 'latitude' });
+  const longitude = useWatch({ control, name: 'longitude' });
 
   const kitIds = cart.map((item) => ({
     id: item.id,
     quantity: item.quantity,
   }));
 
-  const latitude = watch('latitude');
-  const longitude = watch('longitude');
-
   const onPaymentComplete = async () => {
-    const order = await orderService.createOrder({
-      latitude,
-      longitude,
-      kitId: kitIds,
-    });
-    navigate({ to: '/order/$orderId', params: { orderId: order.id } });
+    try {
+      const order = await orderService.createOrder({
+        latitude,
+        longitude,
+        kitId: kitIds,
+      });
+      navigate({ to: '/order/$orderId', params: { orderId: order.id } });
+    } catch {
+      toast.error('Failed to create order!');
+    }
   };
 
-  const handleSubmit = useCallback(
-    async (data: CheckoutSchema) => {
-      console.log(data);
-      // const orderNumber = Date.now();
+  const handleSubmit = async (data: CheckoutSchema) => {
+    console.log(data);
 
-      const finalizeOrder = () => {
-        reset();
+    try {
+      // const body = {
+      //   ...data,
+      //   orderNumber,
+      //   kitIds,
+      // };
+
+      // const { clientSecret } = await orderService.createPaymentIntent(body);
+
+      if (!stripe || !elements) {
         onPaymentComplete();
-      };
-
-      try {
-        setServerError(null);
-
-        // const body = {
-        //   ...data,
-        //   orderNumber,
-        //   kitIds,
-        // };
-
-        // const { clientSecret } = await orderService.createPaymentIntent(body);
-
-        if (!stripe || !elements) {
-          finalizeOrder();
-          return;
-        }
-
-        const cardEl = elements.getElement(CardElement);
-        if (!cardEl) {
-          finalizeOrder();
-          return;
-        }
-
-        // const result = await stripe.confirmCardPayment(resJson.clientSecret, {
-        //   payment_method: {
-        //     card: cardEl,
-        //     billing_details: {
-        //       name: `${data.name} ${data.surname}`,
-        //       email: data.email,
-        //     },
-        //   },
-        // });
-
-        // if (result.error) {
-        //   setServerError(result.error.message || 'Payment failed');
-        //   return;
-        // }
-
-        // if (result.paymentIntent?.status === 'succeeded') {
-        //   finalizeOrder();
-        //   elements.getElement(CardElement)?.clear();
-        //   return;
-        // }
-      } catch {
-        finalizeOrder();
+        return;
       }
-    },
-    [stripe, elements, cart]
-  );
+
+      const cardEl = elements.getElement(CardElement);
+      if (!cardEl) {
+        onPaymentComplete();
+        return;
+      }
+
+      // const result = await stripe.confirmCardPayment(resJson.clientSecret, {
+      //   payment_method: {
+      //     card: cardEl,
+      //     billing_details: {
+      //       name: `${data.name} ${data.surname}`,
+      //       email: data.email,
+      //     },
+      //   },
+      // });
+
+      // if (result.error) {
+      //   setServerError(result.error.message || 'Payment failed');
+      //   return;
+      // }
+
+      // if (result.paymentIntent?.status === 'succeeded') {
+      //   finalizeOrder();
+      //   elements.getElement(CardElement)?.clear();
+      //   return;
+      // }
+    } catch {
+      toast.error('Failed to create order!');
+    }
+  };
 
   useEffect(() => {
     const handleTaxPercentChange = async () => {
-      const taxPercent = await orderService.calculateTax({
-        latitude,
-        longitude,
-      });
-      setTaxPercent(taxPercent);
+      if (!latitude || !longitude) return;
+
+      setIsLoading(true);
+
+      try {
+        const taxPercent = await orderService.calculateTax({
+          latitude,
+          longitude,
+        });
+        setTaxPercent(taxPercent);
+        setMapDialogOpen(false);
+      } catch {
+        toast.error('The location is not in the New York area!');
+      } finally {
+        setIsLoading(false);
+      }
     };
     handleTaxPercentChange();
   }, [latitude, longitude]);
@@ -140,7 +144,12 @@ const CheckoutPage = () => {
         }}
       >
         <FormProvider {...methods}>
-          <CheckoutForm onSubmit={handleSubmit} serverError={serverError} />
+          <CheckoutForm
+            isLoading={isLoading}
+            onSubmit={handleSubmit}
+            mapDialogOpen={mapDialogOpen}
+            setMapDialogOpen={setMapDialogOpen}
+          />
           <OrderSummary isCheckout taxPercent={taxPercent} />
         </FormProvider>
         {isSubmitting && <PageLoader open={isSubmitting} />}

@@ -32,7 +32,6 @@ const StyledButtonGroup = styled(ButtonGroup)({
 const StyledDeleteButton = styled(OutlinedButton)(({ theme }) => ({
   background: 'transparent',
   color: theme.palette.error.main,
-  fontSize: '24px',
   gap: 1,
   border: 'none',
   padding: 0,
@@ -131,16 +130,10 @@ export const CartItem = ({
                       +
                     </ContainedButton>
                   </StyledButtonGroup>
-                  <Typography
-                    variant="body2"
-                    sx={{ color: 'text.secondary', fontSize: '24px' }}
-                  >
+                  <Typography sx={{ color: 'text.secondary' }}>
                     Quantity
                   </Typography>
-                  <StyledDeleteButton
-                    size="small"
-                    onClick={() => setRemoveModalOpen(true)}
-                  >
+                  <StyledDeleteButton onClick={() => setRemoveModalOpen(true)}>
                     <DeleteIcon />
                     Delete
                   </StyledDeleteButton>
@@ -149,7 +142,7 @@ export const CartItem = ({
             </Stack>
           </Stack>
         </Box>
-        <Divider sx={{ margin: '60px 0' }} />
+        <Divider sx={{ margin: '40px 0' }} />
       </Stack>
       <DeleteConfirmationModal
         title="Are you sure you want to remove this kit from the cart?"

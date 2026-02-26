@@ -1,9 +1,4 @@
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/free-mode';
-import 'swiper/css/thumbs';
 import '@/styles/swiper.css';
-
 import { useState } from 'react';
 import { useKitStore } from '@/store/kitStore';
 import { PageLoader } from '@/components/PageLoader';

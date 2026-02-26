@@ -1,4 +1,3 @@
-import '@/styles/swiper.css';
 import { useState } from 'react';
 import { useKitStore } from '@/store/kitStore';
 import { PageLoader } from '@/components/PageLoader';
@@ -8,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import { Header } from '@/components/Header';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { Swiper as SwiperClass } from 'swiper';
-import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
+import { FreeMode, Navigation, Thumbs, Autoplay } from 'swiper/modules';
 import { ContainedButton, OutlinedButton } from '@/components/ui/Button';
 import { headerHeight } from '@/constants/headerHeight';
 import { useCart } from '@/lib/hooks/useCart';
@@ -53,7 +52,10 @@ const KitPage = () => {
             spaceBetween={10}
             navigation={true}
             thumbs={{ swiper: thumbsSwiper }}
-            modules={[FreeMode, Navigation, Thumbs]}
+            autoplay={{
+              delay: 2500,
+            }}
+            modules={[FreeMode, Navigation, Thumbs, Autoplay]}
             className="thumbs-swiper"
           >
             {kit.images.map((kitImage) => (

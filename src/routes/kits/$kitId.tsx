@@ -10,6 +10,8 @@ import { Header } from '@/components/Header';
 import {Swiper, SwiperSlide} from "swiper/react"
 import type { Swiper as SwiperClass } from 'swiper';
 import { styled } from '@mui/material/styles';
+import { ContainedButton } from '@/components/ui/Button';
+import { useCart } from '@/lib/hooks/useCart';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -36,6 +38,7 @@ const StyledSwiperContainer = styled(Stack)({
 })
 
 const KitPage = () => {
+  const {addItem} = useCart();
   const { kitId } = Route.useParams();
   const getKit = useKitStore(s => s.getKit);
   const [kit, setKit] = useState<Kit | null>(null);
@@ -52,6 +55,8 @@ const KitPage = () => {
     };
     fetch();
   }, [kitId, getKit]);
+
+
   if (!kit) return <PageLoader />;
 
   return(
@@ -60,6 +65,7 @@ const KitPage = () => {
     <StyledContainer gap={10}>
       <StyledSwiperContainer gap={3}>
         <Swiper
+          direction='vertical'
           onSwiper={setThumbsSwiper}
           loop={true}
           spaceBetween={10}
@@ -79,7 +85,7 @@ const KitPage = () => {
           loop={true}
           spaceBetween={10}
           navigation={true}
-          thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
+          thumbs={{ swiper: thumbsSwiper }}
           modules={[FreeMode, Navigation, Thumbs]}
           className="mySwiper2"
         >
@@ -101,6 +107,17 @@ const KitPage = () => {
           <Typography variant="subtitle1" color="#4F46E5">
             {kit?.price}$
           </Typography>
+        </Stack>
+        <Stack>
+          <ContainedButton>
+            Add to Wishlist
+          </ContainedButton>
+          <ContainedButton onClick={() =>{
+            addItem(kit)
+            console.log(kit)
+            }}>
+            Add in Cart
+          </ContainedButton>
         </Stack>
         <Stack gap={2}>
           <Typography variant="h6" color="#4F46E5">

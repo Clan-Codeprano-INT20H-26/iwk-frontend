@@ -36,16 +36,17 @@
 
 .mySwiper .swiper-wrapper{
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr !important;
   gap: 10px;
 }
 
 .mySwiperSlide{
-  width: auto !important;
+  width: 100% !important;
   height: auto !important;
 }
 
 .mySwiper .swiper-slide {
+  width:100%;
   height: 100%;
   opacity: 0.4;
 }

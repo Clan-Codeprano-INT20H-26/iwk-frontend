@@ -16,7 +16,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/free-mode';
 import 'swiper/css/thumbs';
 
-import './Swiper.css';
+import '@/styles/Swiper.css';
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 
 const StyledContainer = styled(Stack)({

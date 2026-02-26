@@ -1,141 +1,116 @@
-import { useEffect, useState } from 'react';
-import { useKitStore } from '@/store/kitStore';
-import { type Kit } from '@/types/kit';
-import { PageLoader } from '@/components/PageLoader';
-import { createFileRoute } from '@tanstack/react-router';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import { defaultTypography } from '@/styles/typography';
-import { Header } from '@/components/Header';
-import {Swiper, SwiperSlide} from "swiper/react"
-import type { Swiper as SwiperClass } from 'swiper';
-import { styled } from '@mui/material/styles';
-import { ContainedButton } from '@/components/ui/Button';
-import { useCart } from '@/lib/hooks/useCart';
-
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/free-mode';
 import 'swiper/css/thumbs';
+import '@/styles/swiper.css';
 
-import '@/styles/Swiper.css';
+import { useState } from 'react';
+import { useKitStore } from '@/store/kitStore';
+import { PageLoader } from '@/components/PageLoader';
+import { createFileRoute } from '@tanstack/react-router';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import { Header } from '@/components/Header';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import type { Swiper as SwiperClass } from 'swiper';
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
-
-const StyledContainer = styled(Stack)({
-  height: '100vh',
-  justifyContent:'center',
-  alignItems:'center',
-  position:'relative',
-  flexDirection:'row'
-})
-
-const StyledSwiperContainer = styled(Stack)({
-  width: '500px',
-  height:'500px',
-  flexDirection:'row',
-  backgroundColor:"#999792",
-  padding:'10px'
-})
+import { ContainedButton, OutlinedButton } from '@/components/ui/Button';
+import { headerHeight } from '@/constants/headerHeight';
+import { useCart } from '@/lib/hooks/useCart';
 
 const KitPage = () => {
-  const {addItem} = useCart();
-  const { kitId } = Route.useParams();
-  const getKit = useKitStore(s => s.getKit);
-  const [kit, setKit] = useState<Kit | null>(null);
+  const { items, addItem, removeItem } = useCart();
+  const { kit } = Route.useLoaderData();
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
-  useEffect(() => {
-    if (!kitId) return;
-    const fetch = async () => {
-      try {
-        const data = await getKit(kitId);
-        setKit(data);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    fetch();
-  }, [kitId, getKit]);
 
+  const isInCart = items.some((item) => item.id === kit.id);
 
-  if (!kit) return <PageLoader />;
-
-  return(
+  return (
     <>
-    <Header currentPage={`${kit?.name}`}/>
-    <StyledContainer gap={10}>
-      <StyledSwiperContainer gap={3}>
-        <Swiper
-          direction='vertical'
-          onSwiper={setThumbsSwiper}
-          loop={true}
-          spaceBetween={10}
-          slidesPerView={kit?.images.length}
-          freeMode={true}
-          watchSlidesProgress={true}
-          modules={[FreeMode, Navigation, Thumbs]}
-          className="mySwiper"
-        >
-          {kit?.images.map(kitImage=> (
-            <SwiperSlide className='mySwiperSlide'>
-            <img src={kitImage} />
-          </SwiperSlide>
-          ))}
-        </Swiper>
-        <Swiper
-          loop={true}
-          spaceBetween={10}
-          navigation={true}
-          thumbs={{ swiper: thumbsSwiper }}
-          modules={[FreeMode, Navigation, Thumbs]}
-          className="mySwiper2"
-        >
-          {kit?.images.map(kitImage => (
-            <SwiperSlide>
-            <img src={kitImage} />
-          </SwiperSlide>
-          ))}
-        </Swiper>
-      </StyledSwiperContainer>
-      <Stack gap={3} width={600}>
-        <Stack sx={{fontFamily:defaultTypography.fontFamily}}>
-          <Typography variant="h4">
-            {kit?.name}
-          </Typography>
-          <Typography variant="subtitle1" color='#5C5C5C'>
-            {kit?.seller}
-          </Typography>
-          <Typography variant="subtitle1" color="#4F46E5">
-            {kit?.price}$
-          </Typography>
+      <Header currentPage={kit.name} />
+      <Stack
+        gap={10}
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        sx={{ height: `calc(100vh - ${headerHeight})`, position: 'relative' }}
+      >
+        <Stack gap={3} direction="row" sx={{ width: '650px', p: '10px' }}>
+          <Swiper
+            direction="vertical"
+            onSwiper={setThumbsSwiper}
+            loop={true}
+            spaceBetween={10}
+            slidesPerView={kit?.images.length}
+            freeMode={true}
+            watchSlidesProgress={true}
+            modules={[FreeMode, Navigation, Thumbs]}
+            className="main-swiper"
+          >
+            {kit.images.map((kitImage, index) => (
+              <SwiperSlide key={index} className="main-swiper-slide">
+                <img src={kitImage} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          <Swiper
+            loop={true}
+            spaceBetween={10}
+            navigation={true}
+            thumbs={{ swiper: thumbsSwiper }}
+            modules={[FreeMode, Navigation, Thumbs]}
+            className="thumbs-swiper"
+          >
+            {kit.images.map((kitImage) => (
+              <SwiperSlide>
+                <img src={kitImage} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </Stack>
-        <Stack>
-          <ContainedButton>
-            Add to Wishlist
-          </ContainedButton>
-          <ContainedButton onClick={() =>{
-            addItem(kit)
-            console.log(kit)
-            }}>
-            Add in Cart
-          </ContainedButton>
-        </Stack>
-        <Stack gap={2}>
-          <Typography variant="h6" color="#4F46E5">
-            Description
-          </Typography>
-          <Typography variant="subtitle2">
-            {kit?.description}
-          </Typography>
+        <Stack gap={6} maxWidth={600}>
+          <Stack gap={3}>
+            <Stack>
+              <Typography variant="h4">{kit.name}</Typography>
+              <Typography variant="subtitle1" color="text.secondary">
+                {kit.seller}
+              </Typography>
+              <Typography variant="subtitle1" color="primary.main">
+                {kit.price}$
+              </Typography>
+            </Stack>
+            <Stack direction="row" gap={2}>
+              <OutlinedButton size="large">Add to Wishlist</OutlinedButton>
+              <ContainedButton
+                size="large"
+                onClick={() => (isInCart ? removeItem(kit.id) : addItem(kit))}
+                color={isInCart ? 'error' : 'primary'}
+              >
+                {isInCart ? 'Remove from Cart' : 'Add to Cart'}
+              </ContainedButton>
+            </Stack>
+          </Stack>
+          <Stack gap={2}>
+            <Typography variant="h6" color="primary.main">
+              Description
+            </Typography>
+            <Typography variant="body1" fontWeight={200}>
+              {kit?.description}
+            </Typography>
+          </Stack>
         </Stack>
       </Stack>
-    </StyledContainer>
     </>
   );
 };
 
-
 export const Route = createFileRoute('/kits/$kitId')({
   component: KitPage,
-  loader: () => {},
+  loader: async ({ params }) => {
+    const { kitId } = params;
+    const { getKit } = useKitStore.getState();
+    const kit = await getKit(kitId);
+    return { kit };
+  },
   pendingComponent: PageLoader,
 });

@@ -18,7 +18,7 @@ export const OrderSummary = ({
   taxPercent,
 }: OrderSummaryProps) => {
   const navigate = useNavigate();
-  const { subTotal } = useCart();
+  const { items, subTotal } = useCart();
 
   const taxTotal = subTotal * (taxPercent || 1);
   const finalTotal = subTotal + taxTotal;
@@ -79,7 +79,7 @@ export const OrderSummary = ({
           </Typography>
         </Stack>
       )}
-      <ContainedButton onClick={handleCheckout}>
+      <ContainedButton onClick={handleCheckout} disabled={items.length === 0}>
         {isCheckout ? 'Confirm & Pay' : 'Checkout'}
       </ContainedButton>
     </Stack>

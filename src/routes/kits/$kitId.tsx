@@ -11,6 +11,7 @@ import { FreeMode, Navigation, Thumbs, Autoplay } from 'swiper/modules';
 import { ContainedButton, OutlinedButton } from '@/components/ui/Button';
 import { headerHeight } from '@/constants/headerHeight';
 import { useCart } from '@/lib/hooks/useCart';
+import { formatPrice } from '@/lib/utils/formatPrice';
 
 const KitPage = () => {
   const { items, addItem, removeItem } = useCart();
@@ -35,7 +36,7 @@ const KitPage = () => {
             onSwiper={setThumbsSwiper}
             loop={true}
             spaceBetween={10}
-            slidesPerView={kit?.images.length}
+            slidesPerView={kit.images.length}
             freeMode={true}
             watchSlidesProgress={true}
             modules={[FreeMode, Navigation, Thumbs]}
@@ -73,7 +74,7 @@ const KitPage = () => {
                 {kit.seller}
               </Typography>
               <Typography variant="subtitle1" color="primary.main">
-                {kit.price}$
+                {formatPrice(kit.price)}
               </Typography>
             </Stack>
             <Stack direction="row" gap={2}>
@@ -92,7 +93,7 @@ const KitPage = () => {
               Description
             </Typography>
             <Typography variant="body1" fontWeight={200}>
-              {kit?.description}
+              {kit.description}
             </Typography>
           </Stack>
         </Stack>

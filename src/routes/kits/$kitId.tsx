@@ -58,7 +58,7 @@ const KitPage = () => {
     <>
     <Header currentPage={`${kit?.name}`}/>
     <StyledContainer gap={10}>
-      <StyledSwiperContainer>
+      <StyledSwiperContainer gap={3}>
         <Swiper
           onSwiper={setThumbsSwiper}
           loop={true}

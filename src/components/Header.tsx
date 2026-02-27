@@ -41,7 +41,13 @@ export const Header = ({
     <StyledContainer>
       <Stack direction="row" alignItems="center" gap="20px">
         <IconButton onClick={() => navigate({ to: '/' })} sx={{ p: 0 }}>
-          <img src="/logo.png" alt="logo" width={80} height={30} />
+          <Stack
+            component="img"
+            src="/logo.png"
+            alt="logo"
+            width={80}
+            height={30}
+          />
         </IconButton>
       </Stack>
       <Typography

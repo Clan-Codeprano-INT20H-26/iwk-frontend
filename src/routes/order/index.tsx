@@ -58,7 +58,8 @@ const OrderPage = () => {
             </ContainedButton>
           </Stack>
         </Stack>
-        <img
+        <Stack
+          component="img"
           src="/order-confirmation.png"
           width={494}
           height={450}

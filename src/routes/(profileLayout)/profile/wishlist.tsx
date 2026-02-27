@@ -11,7 +11,13 @@ const WishlistPage = () => {
   return (
     <Stack gap={3}>
       <Typography variant="h4">My Wishlist</Typography>
-      <KitList kits={items} />
+      {items.length > 0 ? (
+        <KitList kits={items} />
+      ) : (
+        <Stack alignItems="center" justifyContent="center" sx={{ pt: 10 }}>
+          <Typography color="text.secondary">No items in wishlist.</Typography>
+        </Stack>
+      )}
     </Stack>
   );
 };

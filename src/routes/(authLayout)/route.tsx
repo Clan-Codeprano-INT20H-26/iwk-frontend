@@ -12,7 +12,13 @@ const AuthLayout = () => {
     <>
       <Box sx={{ position: 'absolute', top: '25px', left: '30px' }}>
         <Link to="/">
-          <img src="/logo.png" alt="logo" width={80} height={30} />
+          <Box
+            component="img"
+            src="/logo.png"
+            alt="logo"
+            width={80}
+            height={30}
+          />
         </Link>
       </Box>
       <Box

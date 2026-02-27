@@ -1,5 +1,5 @@
 import type { Kit } from '@/types/kit';
 
-export interface OrderItem extends Kit {
+export interface OrderKit extends Kit {
   quantity: number;
 }

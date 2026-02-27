@@ -1,5 +1,5 @@
 import { useCart } from '@/lib/hooks/useCart';
-import type { OrderItem } from '@/types/orderItem';
+import type { OrderKit } from '@/types/orderKit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { styled } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
@@ -47,7 +47,7 @@ export const CartItem = ({
   quantity,
   images,
   seller,
-}: OrderItem) => {
+}: OrderKit) => {
   const navigate = useNavigate();
   const { removeItem, decreaseQuantity, increaseQuantity } = useCart();
   const [removeModalOpen, setRemoveModalOpen] = useState(false);
@@ -64,12 +64,13 @@ export const CartItem = ({
       <Stack>
         <Stack direction="row" gap={4}>
           <Box sx={{ width: 223, height: 214, flexShrink: 0 }}>
-            <img
+            <Box
+              component="img"
               src={images[0]}
-              width={223}
+              width={200}
               height={210}
               alt={name}
-              style={{ cursor: 'pointer' }}
+              sx={{ cursor: 'pointer' }}
               onClick={() =>
                 navigate({ to: `/kits/${id}`, params: { kitId: id } })
               }

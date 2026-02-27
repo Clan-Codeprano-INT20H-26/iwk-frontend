@@ -6,20 +6,19 @@ export const useWishlist = () => {
     'wishlist',
     []
   );
-  
-  const addWish= (kit: Kit) => {
-    setWishlist([...wishlist, { ...kit}]);
+
+  const addItem = (kit: Kit) => {
+    setWishlist([...wishlist, { ...kit }]);
   };
 
-  const removeWish = (itemId: string) => {
+  const removeItem = (itemId: string) => {
     const filteredWishlist = wishlist.filter((item) => item.id !== itemId);
     setWishlist(filteredWishlist);
   };
 
-
   return {
-    wishes: wishlist,
-    addWish,
-    removeWish,
+    items: wishlist,
+    addItem,
+    removeItem,
   };
 };

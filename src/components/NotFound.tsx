@@ -26,7 +26,6 @@ export const NotFound = () => {
           </Typography>
           <Stack direction="row" gap={2}>
             <OutlinedButton
-              color="secondary"
               size="large"
               sx={{ px: 5 }}
               onClick={() => navigate({ to: '/' })}
@@ -34,7 +33,6 @@ export const NotFound = () => {
               Home
             </OutlinedButton>
             <ContainedButton
-              color="primary"
               size="large"
               sx={{ px: 5 }}
               onClick={() => history.back()}

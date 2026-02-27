@@ -1,22 +1,18 @@
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { createFileRoute } from '@tanstack/react-router';
 import { PageLoader } from '@/components/PageLoader';
 import { useWishlist } from '@/lib/hooks/useWishlist';
-import { WishCard } from '@/components/WishCard';
+import { KitList } from '@/components/KitList';
+import Stack from '@mui/material/Stack';
 
 const WishlistPage = () => {
-  const {wishes} = useWishlist()
+  const { items } = useWishlist();
 
   return (
-    <>
-      <Typography variant='h3' sx={{mb:'70px'}}>My Wishlist</Typography>
-      <Stack gap={5} flexDirection='row' flexWrap='wrap'>
-        {wishes.map(({id, name, price, images}, index) => (
-          <WishCard key={index} id={id} name={name} price={price} image={images[0]}/>
-        ))}
-      </Stack>
-    </>
+    <Stack gap={3}>
+      <Typography variant="h4">My Wishlist</Typography>
+      <KitList kits={items} />
+    </Stack>
   );
 };
 

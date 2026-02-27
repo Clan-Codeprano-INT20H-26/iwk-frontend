@@ -12,23 +12,26 @@ import { ContainedButton, OutlinedButton } from '@/components/ui/Button';
 import { headerHeight } from '@/constants/headerHeight';
 import { useCart } from '@/lib/hooks/useCart';
 import { useWishlist } from '@/lib/hooks/useWishlist';
-import { useRecentlyReviewed } from '@/lib/hooks/useRecentlyReviewed';
+import { useRecentlyViewed } from '@/lib/hooks/useRecentlyViewed';
 import { formatPrice } from '@/lib/utils/formatPrice';
 
 const KitPage = () => {
-  const { items, addItem, removeItem } = useCart();
-  const {wishes, addWish, removeWish} = useWishlist();
-  const {recentlyReviewed, addRecentlyReviewed} = useRecentlyReviewed()
   const { kit } = Route.useLoaderData();
+  const { items, addItem, removeItem } = useCart();
+  const {
+    items: wishlistItems,
+    addItem: addWish,
+    removeItem: removeWish,
+  } = useWishlist();
+  const { addItem: addRecentlyViewed } = useRecentlyViewed();
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
 
   const isInCart = items.some((item) => item.id === kit.id);
-  const isInRecentlyReviewed = recentlyReviewed.some((item) => item.id === kit.id);
-  const isInWishList = wishes.some((item)=> item.id === kit.id);
+  const isInWishList = wishlistItems.some((item) => item.id === kit.id);
 
   useEffect(() => {
-    if(!isInRecentlyReviewed) addRecentlyReviewed(kit) 
-  },[])
+    addRecentlyViewed(kit);
+  }, [addRecentlyViewed, kit]);
 
   return (
     <>
@@ -92,10 +95,14 @@ const KitPage = () => {
               </Typography>
             </Stack>
             <Stack direction="row" gap={2}>
-              <OutlinedButton size="large"
-              onClick={()=> (isInWishList ? removeWish(kit.id) : addWish(kit))}
-              color={isInWishList ? 'error' : 'primary'}>
-                {isInWishList ? 'Remove from Wishlist' : 'Add in Wishlist'}
+              <OutlinedButton
+                size="large"
+                onClick={() =>
+                  isInWishList ? removeWish(kit.id) : addWish(kit)
+                }
+                color={isInWishList ? 'error' : 'primary'}
+              >
+                {isInWishList ? 'Remove from Wishlist' : 'Add to Wishlist'}
               </OutlinedButton>
               <ContainedButton
                 size="large"

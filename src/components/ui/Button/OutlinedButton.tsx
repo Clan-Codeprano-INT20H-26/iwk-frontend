@@ -4,9 +4,11 @@ import type { ButtonProps as MUIButtonProps } from '@mui/material/Button';
 import { BaseButton } from './BaseButton';
 
 export const StyledOutlinedButton = styled(BaseButton)<MUIButtonProps>(
-  ({ size = 'medium', theme }) => ({
-    color: theme.palette.primary.main,
-    borderColor: theme.palette.primary.main,
+  ({ size = 'medium', color = 'primary', theme }) => ({
+    ...(color === 'primary' && {
+      color: theme.palette.primary.main,
+      borderColor: theme.palette.primary.main,
+    }),
 
     ...(size === 'small' && {
       padding: '3px 9px',

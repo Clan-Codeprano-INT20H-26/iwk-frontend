@@ -8,20 +8,20 @@ export const useWishlist = () => {
   );
   const subTotal = wishlist.reduce((acc, kit) => acc + kit.price, 0);
 
-  const addItem = (kit: Kit) => {
+  const addWish= (kit: Kit) => {
     setWishlist([...wishlist, { ...kit}]);
   };
 
-  const removeItem = (itemId: string) => {
+  const removeWish = (itemId: string) => {
     const filteredCart = wishlist.filter((item) => item.id !== itemId);
     setWishlist(filteredCart);
   };
 
 
   return {
-    items: wishlist,
+    wishes: wishlist,
     subTotal,
-    addItem,
-    removeItem,
+    addWish,
+    removeWish,
   };
 };

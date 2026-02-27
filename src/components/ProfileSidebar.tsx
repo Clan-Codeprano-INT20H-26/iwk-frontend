@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, type ChangeEvent } from 'react';
 import HistoryIcon from '@mui/icons-material/History';
 import LoyaltyIcon from '@mui/icons-material/Loyalty';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -50,7 +50,7 @@ export const ProfileSidebar = () => {
     logOut();
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file && user) {
       const reader = new FileReader();

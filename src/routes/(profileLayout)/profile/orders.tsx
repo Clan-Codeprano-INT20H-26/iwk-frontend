@@ -35,20 +35,35 @@ const OrdersPage = () => {
   const [sortBy, setSortBy] = useState<SortOptionValue>('-createdAt');
   const [fromDate, setFromDate] = useState<Dayjs | null>(null);
   const [toDate, setToDate] = useState<Dayjs | null>(null);
+  const [minDate, setMinDate] = useState<Dayjs>(dayjs());
+  const [maxDate, setMaxDate] = useState<Dayjs>(dayjs());
 
-  const minDate = dayjs(
-    orders.sort(
-      (a, b) =>
-        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-    )[0]?.createdAt
-  );
+  useEffect(() => {
+    const newMinDate = dayjs(
+      orders.sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      )[0]?.createdAt
+    );
 
-  const maxDate = dayjs(
-    orders.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    )[0]?.createdAt
-  );
+    const newMaxDate = dayjs(
+      orders.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )[0]?.createdAt
+    );
+
+    if (newMinDate < minDate) {
+      setMinDate(newMinDate);
+    }
+
+    if (newMaxDate > maxDate) {
+      setMaxDate(newMaxDate);
+    }
+  }, [orders, minDate, maxDate]);
+
+  const fromDateMax = toDate ?? maxDate;
+  const toDateMin = fromDate ?? minDate;
 
   useEffect(() => {
     const handleLoadOrders = async () => {
@@ -76,7 +91,7 @@ const OrdersPage = () => {
               <DatePicker
                 label="From date"
                 minDate={minDate}
-                maxDate={maxDate}
+                maxDate={fromDateMax}
                 slotProps={{
                   textField: {
                     error: false,
@@ -87,7 +102,7 @@ const OrdersPage = () => {
               />
               <DatePicker
                 label="To date"
-                minDate={minDate}
+                minDate={toDateMin}
                 maxDate={maxDate}
                 value={dayjs(toDate)}
                 slotProps={{

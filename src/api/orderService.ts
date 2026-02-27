@@ -30,6 +30,8 @@ export interface GetOrdersParams {
   IsDescending: boolean;
 }
 
+const orderPageSize = 5;
+
 export class OrderService {
   private static instance: OrderService;
 
@@ -44,7 +46,10 @@ export class OrderService {
     params?: Partial<GetOrdersParams>
   ): Promise<PaginatedResponse<Order>> {
     const { data } = await api.get<PaginatedResponse<Order>>('/Order', {
-      params,
+      params: {
+        ...params,
+        PageSize: orderPageSize,
+      },
     });
     return data;
   }

@@ -38,6 +38,7 @@ const OrdersPage = () => {
   const isLoading = useUserStore((state) => state.isLoading);
   const getOrders = useUserStore((state) => state.getOrders);
 
+  const [isUploading, setIsUploading] = useState(false);
   const [pageNumber, setPageNumber] = useState(initialPageNumber);
   const [sortBy, setSortBy] = useState<SortOptionValue>('-createdAt');
   const [fromDate, setFromDate] = useState<Dayjs | null>(null);
@@ -55,12 +56,15 @@ const OrdersPage = () => {
         const formData = new FormData();
         formData.append('file', file);
 
+        setIsUploading(true);
         try {
           await orderService.uploadCSV(formData);
           await getOrders();
           toast.success('CSV file uploaded successfully');
         } catch {
           toast.error('Failed to update CSV file!');
+        } finally {
+          setIsUploading(false);
         }
       };
       reader.readAsDataURL(file);
@@ -127,6 +131,7 @@ const OrdersPage = () => {
               <ContainedButton
                 color="success"
                 startIcon={<FileUploadIcon />}
+                loading={isUploading}
                 onClick={() => inputRef.current?.click()}
               >
                 Import Orders CSV

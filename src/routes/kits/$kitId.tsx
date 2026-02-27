@@ -21,7 +21,7 @@ const KitPage = () => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
 
   const isInCart = items.some((item) => item.id === kit.id);
-  const isInWishList = wishes.some ((item)=> item.id == item.id);
+  const isInWishList = wishes.some((item)=> item.id === kit.id);
 
   return (
     <>

@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack'
 import { RecentlyReviewedKit } from '@/components/RecentlyReviewedKit'
 import { useRecentlyReviewed } from '@/lib/hooks/useRecentlyReviewed'
 
-export const Route = createFileRoute('/profile/recently-reviewed')({
+export const Route = createFileRoute('/(profileLayout)/profile/recently-reviewed')({
   component: RouteComponent,
 })
 
@@ -12,7 +12,7 @@ function RouteComponent() {
   const {recentlyReviewed} = useRecentlyReviewed()
   return(
     <>
-      <Typography variant="h3" sx={{mb:'70px'}}>
+      <Typography variant="h3" sx={{mb:"70px"}}>
         Recently reviewed
       </Typography>
       <Stack gap={5} flexDirection='row' flexWrap='wrap'>

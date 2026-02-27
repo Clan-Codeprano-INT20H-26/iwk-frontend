@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useKitStore } from '@/store/kitStore';
 import { PageLoader } from '@/components/PageLoader';
 import { createFileRoute } from '@tanstack/react-router';
@@ -12,16 +12,23 @@ import { ContainedButton, OutlinedButton } from '@/components/ui/Button';
 import { headerHeight } from '@/constants/headerHeight';
 import { useCart } from '@/lib/hooks/useCart';
 import { useWishlist } from '@/lib/hooks/useWishlist';
+import { useRecentlyReviewed } from '@/lib/hooks/useRecentlyReviewed';
 import { formatPrice } from '@/lib/utils/formatPrice';
 
 const KitPage = () => {
   const { items, addItem, removeItem } = useCart();
   const {wishes, addWish, removeWish} = useWishlist();
+  const {recentlyReviewed, addRecentlyReviewed} = useRecentlyReviewed()
   const { kit } = Route.useLoaderData();
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
 
   const isInCart = items.some((item) => item.id === kit.id);
+  const isInRecentlyReviewed = recentlyReviewed.some((item) => item.id === kit.id);
   const isInWishList = wishes.some((item)=> item.id === kit.id);
+
+  useEffect(() => {
+    if(!isInRecentlyReviewed) addRecentlyReviewed(kit) 
+  },[])
 
   return (
     <>

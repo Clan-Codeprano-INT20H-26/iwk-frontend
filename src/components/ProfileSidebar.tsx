@@ -10,6 +10,7 @@ import { headerHeight } from '@/constants/headerHeight';
 import { useNavigate } from '@tanstack/react-router';
 import Stack from '@mui/material/Stack';
 import EditIcon from '@mui/icons-material/EditSquare';
+import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import { Link } from './ui/Link';
 import { TextButton } from './ui/Button';
 import { IconButton } from './ui/IconButton';
@@ -26,6 +27,11 @@ const navLinks = [
     label: 'My Wishlist',
     icon: <LoyaltyIcon />,
     to: '/profile/wishlist',
+  },
+  {
+    label: 'Recently reviewed',
+    icon: <ManageSearchIcon />,
+    to: '/profile/recently-reviewed',
   },
 ] as const;
 

@@ -10,10 +10,12 @@ import { ContainedButton } from './ui/Button';
 import { SearchBar } from './Searchbar';
 import { headerHeight } from '@/constants/headerHeight';
 import { useCart } from '@/lib/hooks/useCart';
+import type { KeyboardEvent } from 'react';
 
 interface HeaderProps {
   currentPage: string;
-  handleSearch?: (searchTerm: string) => void;
+  handleSearchChange?: (searchTerm: string) => void;
+  handleSearchKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const StyledContainer = styled(Stack)(({ theme }) => ({
@@ -26,7 +28,11 @@ const StyledContainer = styled(Stack)(({ theme }) => ({
   height: headerHeight,
 }));
 
-export const Header = ({ currentPage, handleSearch }: HeaderProps) => {
+export const Header = ({
+  currentPage,
+  handleSearchChange,
+  handleSearchKeyDown,
+}: HeaderProps) => {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
   const { items } = useCart();
@@ -53,8 +59,11 @@ export const Header = ({ currentPage, handleSearch }: HeaderProps) => {
         {currentPage}
       </Typography>
       <Stack direction="row" alignItems="center" gap="20px">
-        {handleSearch && (
-          <SearchBar onChange={(e) => handleSearch(e.target.value)} />
+        {handleSearchChange && (
+          <SearchBar
+            onChange={(e) => handleSearchChange?.(e.target.value)}
+            onKeyDown={handleSearchKeyDown}
+          />
         )}
         <Stack direction="row" alignItems="center" gap="15px">
           <IconButton onClick={() => navigate({ to: '/cart' })}>

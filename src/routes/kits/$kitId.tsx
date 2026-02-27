@@ -30,19 +30,23 @@ const KitPage = () => {
         alignItems="center"
         sx={{ height: `calc(100vh - ${headerHeight})`, position: 'relative' }}
       >
-        <Stack gap={3} direction="row" sx={{ width: '650px', p: '10px' }}>
+        <Stack
+          gap={3}
+          direction="row"
+          sx={{ width: '650px', height: '680px', p: '10px' }}
+        >
           <Swiper
             direction="vertical"
             onSwiper={setThumbsSwiper}
             loop={true}
             spaceBetween={10}
-            slidesPerView={kit.images.length}
+            slidesPerView={3}
             freeMode={true}
             watchSlidesProgress={true}
             modules={[FreeMode, Navigation, Thumbs]}
             className="main-swiper"
           >
-            {kit.images.map((kitImage, index) => (
+            {kit.images.slice(0, 3).map((kitImage, index) => (
               <SwiperSlide key={index} className="main-swiper-slide">
                 <img src={kitImage} />
               </SwiperSlide>
@@ -59,8 +63,8 @@ const KitPage = () => {
             modules={[FreeMode, Navigation, Thumbs, Autoplay]}
             className="thumbs-swiper"
           >
-            {kit.images.map((kitImage) => (
-              <SwiperSlide>
+            {kit.images.slice(0, 3).map((kitImage, index) => (
+              <SwiperSlide key={index}>
                 <img src={kitImage} />
               </SwiperSlide>
             ))}

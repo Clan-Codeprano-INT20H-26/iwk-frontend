@@ -4,14 +4,15 @@ import { Toaster } from 'react-hot-toast';
 import { useUserStore } from '@/store/userStore';
 import { getCookie } from '@/lib/utils/getCookie';
 import { PageLoader } from '@/components/PageLoader';
+import { StripeProvider } from '@/providers/StripeProvider';
 
 const RootLayout = () => (
-  <>
-    <ThemeProvider>
+  <ThemeProvider>
+    <StripeProvider>
       <Outlet />
-    </ThemeProvider>
-    <Toaster />
-  </>
+      <Toaster />
+    </StripeProvider>
+  </ThemeProvider>
 );
 
 export const Route = createRootRoute({

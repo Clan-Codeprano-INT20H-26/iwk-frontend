@@ -1,14 +1,16 @@
-import type { Kit } from './kit';
+import type { OrderItem } from './orderItem';
 import type { TaxBreakdown } from './taxBreakdown';
 
 export interface Order {
   id: string;
-  userId: string;
-  checkout: Kit[];
-  subTotal: number;
-  status: 'received' | 'pending' | 'cancelled';
+  items: OrderItem[];
+  status: 'Successful' | 'Pending' | 'Failed';
   latitude: string;
   longitude: string;
-  taxesBreakdown: TaxBreakdown;
-  timestamp: string;
+  subTotal: number;
+  taxAmount: number;
+  compositeTaxRate: number;
+  totalAmount: number;
+  taxes: TaxBreakdown;
+  createdAt: string;
 }

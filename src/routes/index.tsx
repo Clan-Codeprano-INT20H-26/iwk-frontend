@@ -39,6 +39,7 @@ const CatalogPage = () => {
   );
 
   const handleSearch = (searchTerm: string) => {
+    if (searchTerm.length < 3 && searchTerm !== '') return;
     setSearchTerm(searchTerm);
     setKits([]);
   };
@@ -52,7 +53,13 @@ const CatalogPage = () => {
 
   return (
     <>
-      <Header currentPage="catalog" handleSearch={handleSearch} />
+      <Header
+        currentPage="catalog"
+        handleSearchChange={handleSearch}
+        handleSearchKeyDown={(e) => {
+          if (e.key === 'Enter') handleParamsChange();
+        }}
+      />
       <Stack
         justifyContent="space-between"
         sx={{ padding: 4, minHeight: `calc(100vh - ${headerHeight})` }}

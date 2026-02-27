@@ -1,5 +1,5 @@
 import { useCart } from '@/lib/hooks/useCart';
-import type { CartItem as CartItemProps } from '@/types/cartItem';
+import type { OrderItem } from '@/types/orderItem';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { styled } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
@@ -11,7 +11,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { ContainedButton } from './ui/Button';
 import { OutlinedButton } from './ui/Button';
-import { DeleteConfirmationModal } from './DeleteConfirmationModal';
+import { ConfirmationModal } from './ConfirmationModal';
 
 const StyledButtonGroup = styled(ButtonGroup)({
   display: 'flex',
@@ -32,7 +32,6 @@ const StyledButtonGroup = styled(ButtonGroup)({
 const StyledDeleteButton = styled(OutlinedButton)(({ theme }) => ({
   background: 'transparent',
   color: theme.palette.error.main,
-  fontSize: '24px',
   gap: 1,
   border: 'none',
   padding: 0,
@@ -48,7 +47,7 @@ export const CartItem = ({
   quantity,
   images,
   seller,
-}: CartItemProps) => {
+}: OrderItem) => {
   const navigate = useNavigate();
   const { removeItem, decreaseQuantity, increaseQuantity } = useCart();
   const [removeModalOpen, setRemoveModalOpen] = useState(false);
@@ -129,16 +128,10 @@ export const CartItem = ({
                     +
                   </ContainedButton>
                 </StyledButtonGroup>
-                <Typography
-                  variant="body2"
-                  sx={{ color: 'text.secondary', fontSize: '24px' }}
-                >
+                <Typography sx={{ color: 'text.secondary' }}>
                   Quantity
                 </Typography>
-                <StyledDeleteButton
-                  size="small"
-                  onClick={() => setRemoveModalOpen(true)}
-                >
+                <StyledDeleteButton onClick={() => setRemoveModalOpen(true)}>
                   <DeleteIcon />
                   Delete
                 </StyledDeleteButton>
@@ -146,15 +139,15 @@ export const CartItem = ({
             </Stack>
           </Stack>
         </Stack>
-        <Divider sx={{ margin: '60px 0' }} />
+        <Divider sx={{ margin: '40px 0' }} />
       </Stack>
-      <DeleteConfirmationModal
+      <ConfirmationModal
         title="Are you sure you want to remove this kit from the cart?"
         description="Confirm to continue or cancel."
         open={removeModalOpen}
         onClose={() => setRemoveModalOpen(false)}
-        onDelete={handleRemoveItem}
-        deleteText="Remove"
+        onAction={handleRemoveItem}
+        actionText="Remove"
       />
     </>
   );

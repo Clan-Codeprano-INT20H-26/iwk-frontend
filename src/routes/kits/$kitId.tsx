@@ -11,14 +11,17 @@ import { FreeMode, Navigation, Thumbs, Autoplay } from 'swiper/modules';
 import { ContainedButton, OutlinedButton } from '@/components/ui/Button';
 import { headerHeight } from '@/constants/headerHeight';
 import { useCart } from '@/lib/hooks/useCart';
+import { useWishlist } from '@/lib/hooks/useWishlist';
 import { formatPrice } from '@/lib/utils/formatPrice';
 
 const KitPage = () => {
   const { items, addItem, removeItem } = useCart();
+  const {wishes, addWish, removeWish} = useWishlist();
   const { kit } = Route.useLoaderData();
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
 
   const isInCart = items.some((item) => item.id === kit.id);
+  const isInWishList = wishes.some ((item)=> item.id == item.id);
 
   return (
     <>
@@ -78,7 +81,11 @@ const KitPage = () => {
               </Typography>
             </Stack>
             <Stack direction="row" gap={2}>
-              <OutlinedButton size="large">Add to Wishlist</OutlinedButton>
+              <OutlinedButton size="large"
+              onClick={()=> (isInWishList ? removeWish(kit.id) : addWish(kit))}
+              color={isInWishList ? 'error' : 'primary'}>
+                {isInWishList ? 'Remove from Wishlist' : 'Add in Wishlist'}
+              </OutlinedButton>
               <ContainedButton
                 size="large"
                 onClick={() => (isInCart ? removeItem(kit.id) : addItem(kit))}

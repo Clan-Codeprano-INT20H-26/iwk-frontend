@@ -53,7 +53,7 @@ export class UserService {
   }
 
   async getUser(): Promise<User> {
-    const { data: user } = await api.get<User>('/auth/profile');
+    const { data: user } = await api.get<User>('/profile');
     return user;
   }
 }

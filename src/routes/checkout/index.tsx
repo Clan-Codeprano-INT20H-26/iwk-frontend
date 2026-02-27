@@ -25,7 +25,7 @@ const CheckoutPage = () => {
   const [taxPercent, setTaxPercent] = useState<number>();
   const [mapDialogOpen, setMapDialogOpen] = useState(false);
 
-  const { items: cart } = useCart();
+  const { items: cart, clearCart } = useCart();
 
   const methods = useForm<CheckoutSchema>({
     resolver: zodResolver(checkoutSchema),
@@ -59,6 +59,7 @@ const CheckoutPage = () => {
         longitude,
         items: kitIds,
       });
+      clearCart();
       navigate({ to: '/order', search: { id: order.id } });
     } catch {
       toast.error('Failed to create order!');
@@ -161,9 +162,9 @@ export const Route = createFileRoute('/checkout/')({
   component: CheckoutPage,
   loader: () => {
     const cart = localStorage.getItem('cart');
-    const { user } = useUserStore.getState();
+    const { user, isLoading } = useUserStore.getState();
 
-    if (!user) {
+    if (!user && !isLoading) {
       throw redirect({ to: '/auth/sign-in' });
     }
 

@@ -5,7 +5,7 @@ import { styled, type Theme } from '@mui/material/styles';
 
 export const StyledInputLabel = styled(InputLabel)(
   ({ theme }: { theme: Theme }) => ({
-    ...theme.typography.caption,
+    ...theme.typography.body2,
     color: theme.palette.text.secondary,
     marginBottom: '8px',
     transform: 'none',
@@ -16,7 +16,7 @@ export const StyledInputLabel = styled(InputLabel)(
 export const StyledInput = styled(Input, {
   shouldForwardProp: (propName) => propName !== 'error',
 })<{ error?: boolean }>(({ theme, error }) => ({
-  ...theme.typography.caption,
+  ...theme.typography.body2,
   padding: '12px 16px',
   border: '1px solid',
   borderRadius: '8px',

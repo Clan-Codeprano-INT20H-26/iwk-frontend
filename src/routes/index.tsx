@@ -76,17 +76,19 @@ const CatalogPage = () => {
             ))}
           </Grid>
         )}
-        <Pagination
-          color="primary"
-          shape="rounded"
-          page={pageNumber}
-          count={totalPages}
-          onChange={(_, value) => handleParamsChange(value)}
-          sx={{
-            alignSelf: 'center',
-            visibility: isEmpty ? 'hidden' : 'visible',
-          }}
-        />
+        {!isLoading && !isDebouncing && (
+          <Pagination
+            color="primary"
+            shape="rounded"
+            page={pageNumber}
+            count={totalPages}
+            onChange={(_, value) => handleParamsChange(value)}
+            sx={{
+              alignSelf: 'center',
+              visibility: isEmpty ? 'hidden' : 'visible',
+            }}
+          />
+        )}
       </Stack>
     </>
   );

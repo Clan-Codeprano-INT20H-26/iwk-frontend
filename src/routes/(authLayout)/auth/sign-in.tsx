@@ -101,6 +101,6 @@ const SignInPage = () => {
   );
 };
 
-export const Route = createFileRoute('/auth/sign-in')({
+export const Route = createFileRoute('/(authLayout)/auth/sign-in')({
   component: SignInPage,
 });

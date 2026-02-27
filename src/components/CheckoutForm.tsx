@@ -178,6 +178,7 @@ export const CheckoutForm = ({
             maxBounds={nyBounds}
             style={{ height: 700 }}
             mapStyle="mapbox://styles/ecchigrill/cmm53z9jx001001qzdtaa6eta"
+            attributionControl={false}
           >
             {currentLat && currentLng && (
               <Marker

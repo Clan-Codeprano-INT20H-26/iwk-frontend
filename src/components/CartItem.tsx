@@ -61,87 +61,84 @@ export const CartItem = ({
 
   return (
     <>
-      <Stack sx={{ marginRight: '100px !important' }}>
-        <Box>
-          <Stack direction="row" spacing={4}>
-            <Box sx={{ width: 223, height: 214, flexShrink: 0 }}>
-              <img
-                src={images[0]}
-                width={223}
-                height={214}
-                alt={name}
-                style={{ cursor: 'pointer' }}
-                onClick={() =>
-                  navigate({ to: `/kits/${id}`, params: { kitId: id } })
-                }
-              />
-            </Box>
+      <Stack>
+        <Stack direction="row" gap={4}>
+          <Box sx={{ width: 223, height: 214, flexShrink: 0 }}>
+            <img
+              src={images[0]}
+              width={223}
+              height={210}
+              alt={name}
+              style={{ cursor: 'pointer' }}
+              onClick={() =>
+                navigate({ to: `/kits/${id}`, params: { kitId: id } })
+              }
+            />
+          </Box>
+
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            sx={{
+              height: 214,
+              flexGrow: 1,
+            }}
+          >
+            <Stack spacing={0.5}>
+              <Typography variant="h4">{name}</Typography>
+              <Typography variant="subtitle1" color="primary.main">
+                {seller}
+              </Typography>
+            </Stack>
 
             <Stack
-              direction="row"
+              direction="column"
               justifyContent="space-between"
-              sx={{
-                height: 214,
-                flexGrow: 1,
-              }}
+              alignItems="flex-end"
             >
-              <Stack spacing={0.5}>
-                <Typography variant="h4">{name}</Typography>
-                <Typography variant="subtitle1" color="primary.main">
-                  {seller}
-                </Typography>
-              </Stack>
-
+              <Typography variant="h4" color="primary.main">
+                ${updatedPrice}
+              </Typography>
               <Stack
-                direction="column"
-                justifyContent="space-between"
-                alignItems="flex-end"
-                sx={{ marginRight: 'auto' }}
+                direction="row"
+                alignItems="center"
+                spacing={'20px'}
+                sx={{
+                  paddingLeft: '237px',
+                }}
               >
-                <Typography variant="h4" color="primary.main">
-                  ${updatedPrice}
+                <StyledButtonGroup size="small">
+                  <ContainedButton
+                    sx={{
+                      backgroundColor: (theme) => theme.palette.grey[100],
+                      color: (theme) => theme.palette.grey[500],
+                    }}
+                    onClick={() => decreaseQuantity(id, quantity)}
+                  >
+                    -
+                  </ContainedButton>
+                  <Typography variant="body1">{quantity}</Typography>
+                  <ContainedButton
+                    sx={{
+                      backgroundColor: (theme) => theme.palette.grey[100],
+                      color: (theme) => theme.palette.primary.main,
+                    }}
+                    onClick={() => increaseQuantity(id, quantity)}
+                  >
+                    +
+                  </ContainedButton>
+                </StyledButtonGroup>
+                <Typography sx={{ color: 'text.secondary' }}>
+                  Quantity
                 </Typography>
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  spacing={'20px'}
-                  sx={{
-                    paddingLeft: '237px',
-                  }}
-                >
-                  <StyledButtonGroup size="small">
-                    <ContainedButton
-                      sx={{
-                        backgroundColor: (theme) => theme.palette.grey[100],
-                        color: (theme) => theme.palette.grey[500],
-                      }}
-                      onClick={() => decreaseQuantity(id, quantity)}
-                    >
-                      -
-                    </ContainedButton>
-                    <Typography variant="body1">{quantity}</Typography>
-                    <ContainedButton
-                      sx={{
-                        backgroundColor: (theme) => theme.palette.grey[100],
-                        color: (theme) => theme.palette.primary.main,
-                      }}
-                      onClick={() => increaseQuantity(id, quantity)}
-                    >
-                      +
-                    </ContainedButton>
-                  </StyledButtonGroup>
-                  <Typography sx={{ color: 'text.secondary' }}>
-                    Quantity
-                  </Typography>
-                  <StyledDeleteButton onClick={() => setRemoveModalOpen(true)}>
-                    <DeleteIcon />
-                    Delete
-                  </StyledDeleteButton>
-                </Stack>
+                <StyledDeleteButton onClick={() => setRemoveModalOpen(true)}>
+                  <DeleteIcon />
+                  Delete
+                </StyledDeleteButton>
               </Stack>
             </Stack>
           </Stack>
-        </Box>
+        </Stack>
         <Divider sx={{ margin: '40px 0' }} />
       </Stack>
       <ConfirmationModal

@@ -1,10 +1,17 @@
-import type { OrderItem } from './orderItem';
+import type { Kit } from './kit';
 import type { TaxBreakdown } from './taxBreakdown';
+
+export type Status = 'Successful' | 'Pending' | 'Failed';
+interface OrderItem {
+  kit: Kit;
+  quantity: number;
+}
 
 export interface Order {
   id: string;
+  userId: string;
   items: OrderItem[];
-  status: 'Successful' | 'Pending' | 'Failed';
+  status: Status;
   latitude: string;
   longitude: string;
   subTotal: number;

@@ -2,14 +2,21 @@ import { create } from 'zustand';
 import { UserService } from '@/api/userService';
 import type { User } from '@/types/user';
 import { setCookie } from '@/lib/utils/setCookie';
+import type { Order } from '@/types/order';
+import { OrderService, type GetOrdersParams } from '@/api/orderService';
 
 const userService = new UserService();
+const orderService = new OrderService();
 
 interface UserState {
   user: User | null;
+  orders: Order[];
+  totalPages: number;
+  pageNumber: number;
   isLoading: boolean;
   setUser: (user: User | null) => void;
   getProfile: () => Promise<void>;
+  getOrders: (params?: Partial<GetOrdersParams>) => Promise<void>;
   login: (
     email: string,
     password: string,
@@ -25,6 +32,9 @@ interface UserState {
 
 const initialState = {
   user: null,
+  orders: [],
+  totalPages: 1,
+  pageNumber: 1,
   isLoading: false,
 };
 
@@ -40,6 +50,23 @@ export const useUserStore = create<UserState>((set) => ({
     try {
       const user = await userService.getUser();
       set({ user });
+    } catch (error) {
+      return Promise.reject(error);
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  getOrders: async (params?: Partial<GetOrdersParams>) => {
+    set({ isLoading: true });
+    try {
+      const { items, totalPages, pageNumber } =
+        await orderService.getOrders(params);
+      set({
+        orders: items,
+        totalPages,
+        pageNumber,
+      });
     } catch (error) {
       return Promise.reject(error);
     } finally {

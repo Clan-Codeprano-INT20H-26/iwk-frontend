@@ -10,14 +10,14 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import MenuItem from '@mui/material/MenuItem';
 import { Select } from '@/components/ui/Select';
-import type { SortCriteria } from '@/types/sortCriteria';
+import type { KitSortCriteria } from '@/types/kitSortCriteria';
 import { KitList } from '@/components/KitList';
+import Typography from '@mui/material/Typography';
 
 const normalizeSelectValue = (
-  sortBy?: SortCriteria,
-  isDescending?: boolean
+  sortBy: KitSortCriteria,
+  isDescending: boolean
 ) => {
-  if (!sortBy) return '+name';
   const sortDirection = isDescending ? '-' : '+';
   return `${sortDirection}${sortBy}`;
 };
@@ -36,9 +36,11 @@ const sortOptions = [
   { value: '-price', label: 'Price: Low to High' },
 ] as const;
 
+type SortOptionValue = (typeof sortOptions)[number]['value'];
+
 const CatalogPage = () => {
   const navigate = useNavigate();
-  const { sortBy, desc: isDescending } = Route.useSearch();
+  const { sortBy = 'name', desc: isDescending = false } = Route.useSearch();
   const [searchTerm, setSearchTerm] = useState('');
   const { debouncedValue, isDebouncing } = useDebounce(searchTerm, 1500);
   const debouncedValueRef = useRef(debouncedValue);
@@ -49,9 +51,10 @@ const CatalogPage = () => {
   const setKits = useKitStore((state) => state.setKits);
 
   const isEmpty = kits.length === 0;
+  const isPaginated = !isLoading && !isDebouncing && !isEmpty && totalPages > 1;
 
   const handleParamsChange = useCallback(
-    (page?: number, sortBy?: SortCriteria, isDescending?: boolean) => {
+    (page?: number, sortBy?: KitSortCriteria, isDescending?: boolean) => {
       navigate({
         to: '/',
         search: {
@@ -69,6 +72,12 @@ const CatalogPage = () => {
     if (searchTerm.length < 3 && searchTerm !== '') return;
     setSearchTerm(searchTerm);
     setKits([]);
+  };
+
+  const handleSortChange = (value: SortOptionValue) => {
+    const sortBy = value.slice(1) as KitSortCriteria;
+    const isDescending = value.startsWith('-');
+    handleParamsChange(pageNumber, sortBy, isDescending);
   };
 
   useEffect(() => {
@@ -98,23 +107,19 @@ const CatalogPage = () => {
           <Stack
             alignItems="center"
             justifyContent="center"
-            sx={{ flex: 1, py: 8, color: 'text.secondary' }}
+            sx={{ flex: 1, py: 8 }}
           >
-            No kits found. Try a different search or check back later.
+            <Typography color="text.secondary">
+              No kits found. Try a different search or check back later.
+            </Typography>
           </Stack>
         ) : (
           <Stack gap={3}>
             <Select
               value={normalizeSelectValue(sortBy, isDescending)}
-              onChange={(e) => {
-                const sortBy = (e.target.value as string).slice(1);
-                const isDescending = (e.target.value as string).startsWith('-');
-                handleParamsChange(
-                  pageNumber,
-                  sortBy as SortCriteria,
-                  isDescending
-                );
-              }}
+              onChange={(e) =>
+                handleSortChange(e.target.value as SortOptionValue)
+              }
             >
               {sortOptions.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
@@ -125,7 +130,7 @@ const CatalogPage = () => {
             <KitList kits={kits} />
           </Stack>
         )}
-        {!isLoading && !isDebouncing && (
+        {isPaginated && (
           <Pagination
             color="primary"
             shape="rounded"
@@ -134,7 +139,6 @@ const CatalogPage = () => {
             onChange={(_, value) => handleParamsChange(value)}
             sx={{
               alignSelf: 'center',
-              visibility: isEmpty ? 'hidden' : 'visible',
             }}
           />
         )}

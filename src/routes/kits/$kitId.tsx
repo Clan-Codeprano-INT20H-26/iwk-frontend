@@ -61,7 +61,7 @@ const KitPage = () => {
           >
             {kit.images.slice(0, 3).map((kitImage, index) => (
               <SwiperSlide key={index} className="main-swiper-slide">
-                <img src={kitImage} />
+                <Stack component="img" src={kitImage} />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -78,7 +78,7 @@ const KitPage = () => {
           >
             {kit.images.slice(0, 3).map((kitImage, index) => (
               <SwiperSlide key={index}>
-                <img src={kitImage} />
+                <Stack component="img" src={kitImage} />
               </SwiperSlide>
             ))}
           </Swiper>

@@ -105,7 +105,7 @@ const SignUpPage = () => {
           </ContainedButton>
         </Stack>
       </AuthContainer>
-      <img src="/sign-up.png" alt="Sign up" />
+      <Stack component="img" src="/sign-up.png" alt="Sign up" />
     </>
   );
 };

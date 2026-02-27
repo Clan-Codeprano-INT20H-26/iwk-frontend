@@ -4,9 +4,7 @@ import CardMedia from '@mui/material/CardMedia';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import { formatPrice } from '@/lib/utils/formatPrice';
-import { useRecentlyReviewed } from '@/lib/hooks/useRecentlyReviewed';
 
 interface RecentlyReviewedKitProps{
     id:string,

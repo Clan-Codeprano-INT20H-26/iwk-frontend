@@ -15,17 +15,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as OrderIndexRouteImport } from './routes/order/index'
 import { Route as CheckoutIndexRouteImport } from './routes/checkout/index'
 import { Route as CartIndexRouteImport } from './routes/cart/index'
-<<<<<<< HEAD
-import { Route as AuthIndexRouteImport } from './routes/auth/index'
-import { Route as ProfileWishlistRouteImport } from './routes/profile/wishlist'
-import { Route as ProfileRecentlyReviewedRouteImport } from './routes/profile/recently-reviewed'
-import { Route as ProfileOrdersRouteImport } from './routes/profile/orders'
-=======
->>>>>>> fd454a687f10a4a53cbe61ab3e0f2d16231e8de7
 import { Route as KitsKitIdRouteImport } from './routes/kits/$kitId'
 import { Route as profileLayoutProfileIndexRouteImport } from './routes/(profileLayout)/profile/index'
 import { Route as authLayoutAuthIndexRouteImport } from './routes/(authLayout)/auth/index'
 import { Route as profileLayoutProfileWishlistRouteImport } from './routes/(profileLayout)/profile/wishlist'
+import { Route as profileLayoutProfileRecentlyReviewedRouteImport } from './routes/(profileLayout)/profile/recently-reviewed'
 import { Route as profileLayoutProfileOrdersRouteImport } from './routes/(profileLayout)/profile/orders'
 import { Route as authLayoutAuthSignUpRouteImport } from './routes/(authLayout)/auth/sign-up'
 import { Route as authLayoutAuthSignInRouteImport } from './routes/(authLayout)/auth/sign-in'
@@ -58,29 +52,6 @@ const CartIndexRoute = CartIndexRouteImport.update({
   path: '/cart/',
   getParentRoute: () => rootRouteImport,
 } as any)
-<<<<<<< HEAD
-const AuthIndexRoute = AuthIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AuthRouteRoute,
-} as any)
-const ProfileWishlistRoute = ProfileWishlistRouteImport.update({
-  id: '/wishlist',
-  path: '/wishlist',
-  getParentRoute: () => ProfileRouteRoute,
-} as any)
-const ProfileRecentlyReviewedRoute = ProfileRecentlyReviewedRouteImport.update({
-  id: '/recently-reviewed',
-  path: '/recently-reviewed',
-  getParentRoute: () => ProfileRouteRoute,
-} as any)
-const ProfileOrdersRoute = ProfileOrdersRouteImport.update({
-  id: '/orders',
-  path: '/orders',
-  getParentRoute: () => ProfileRouteRoute,
-} as any)
-=======
->>>>>>> fd454a687f10a4a53cbe61ab3e0f2d16231e8de7
 const KitsKitIdRoute = KitsKitIdRouteImport.update({
   id: '/kits/$kitId',
   path: '/kits/$kitId',
@@ -103,6 +74,12 @@ const profileLayoutProfileWishlistRoute =
     path: '/profile/wishlist',
     getParentRoute: () => profileLayoutRouteRoute,
   } as any)
+const profileLayoutProfileRecentlyReviewedRoute =
+  profileLayoutProfileRecentlyReviewedRouteImport.update({
+    id: '/profile/recently-reviewed',
+    path: '/profile/recently-reviewed',
+    getParentRoute: () => profileLayoutRouteRoute,
+  } as any)
 const profileLayoutProfileOrdersRoute =
   profileLayoutProfileOrdersRouteImport.update({
     id: '/profile/orders',
@@ -123,19 +100,13 @@ const authLayoutAuthSignInRoute = authLayoutAuthSignInRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/kits/$kitId': typeof KitsKitIdRoute
-<<<<<<< HEAD
-  '/profile/orders': typeof ProfileOrdersRoute
-  '/profile/recently-reviewed': typeof ProfileRecentlyReviewedRoute
-  '/profile/wishlist': typeof ProfileWishlistRoute
-  '/auth/': typeof AuthIndexRoute
-=======
->>>>>>> fd454a687f10a4a53cbe61ab3e0f2d16231e8de7
   '/cart/': typeof CartIndexRoute
   '/checkout/': typeof CheckoutIndexRoute
   '/order/': typeof OrderIndexRoute
   '/auth/sign-in': typeof authLayoutAuthSignInRoute
   '/auth/sign-up': typeof authLayoutAuthSignUpRoute
   '/profile/orders': typeof profileLayoutProfileOrdersRoute
+  '/profile/recently-reviewed': typeof profileLayoutProfileRecentlyReviewedRoute
   '/profile/wishlist': typeof profileLayoutProfileWishlistRoute
   '/auth/': typeof authLayoutAuthIndexRoute
   '/profile/': typeof profileLayoutProfileIndexRoute
@@ -143,19 +114,13 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/kits/$kitId': typeof KitsKitIdRoute
-<<<<<<< HEAD
-  '/profile/orders': typeof ProfileOrdersRoute
-  '/profile/recently-reviewed': typeof ProfileRecentlyReviewedRoute
-  '/profile/wishlist': typeof ProfileWishlistRoute
-  '/auth': typeof AuthIndexRoute
-=======
->>>>>>> fd454a687f10a4a53cbe61ab3e0f2d16231e8de7
   '/cart': typeof CartIndexRoute
   '/checkout': typeof CheckoutIndexRoute
   '/order': typeof OrderIndexRoute
   '/auth/sign-in': typeof authLayoutAuthSignInRoute
   '/auth/sign-up': typeof authLayoutAuthSignUpRoute
   '/profile/orders': typeof profileLayoutProfileOrdersRoute
+  '/profile/recently-reviewed': typeof profileLayoutProfileRecentlyReviewedRoute
   '/profile/wishlist': typeof profileLayoutProfileWishlistRoute
   '/auth': typeof authLayoutAuthIndexRoute
   '/profile': typeof profileLayoutProfileIndexRoute
@@ -166,19 +131,13 @@ export interface FileRoutesById {
   '/(authLayout)': typeof authLayoutRouteRouteWithChildren
   '/(profileLayout)': typeof profileLayoutRouteRouteWithChildren
   '/kits/$kitId': typeof KitsKitIdRoute
-<<<<<<< HEAD
-  '/profile/orders': typeof ProfileOrdersRoute
-  '/profile/recently-reviewed': typeof ProfileRecentlyReviewedRoute
-  '/profile/wishlist': typeof ProfileWishlistRoute
-  '/auth/': typeof AuthIndexRoute
-=======
->>>>>>> fd454a687f10a4a53cbe61ab3e0f2d16231e8de7
   '/cart/': typeof CartIndexRoute
   '/checkout/': typeof CheckoutIndexRoute
   '/order/': typeof OrderIndexRoute
   '/(authLayout)/auth/sign-in': typeof authLayoutAuthSignInRoute
   '/(authLayout)/auth/sign-up': typeof authLayoutAuthSignUpRoute
   '/(profileLayout)/profile/orders': typeof profileLayoutProfileOrdersRoute
+  '/(profileLayout)/profile/recently-reviewed': typeof profileLayoutProfileRecentlyReviewedRoute
   '/(profileLayout)/profile/wishlist': typeof profileLayoutProfileWishlistRoute
   '/(authLayout)/auth/': typeof authLayoutAuthIndexRoute
   '/(profileLayout)/profile/': typeof profileLayoutProfileIndexRoute
@@ -188,19 +147,13 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/kits/$kitId'
-<<<<<<< HEAD
-    | '/profile/orders'
-    | '/profile/recently-reviewed'
-    | '/profile/wishlist'
-    | '/auth/'
-=======
->>>>>>> fd454a687f10a4a53cbe61ab3e0f2d16231e8de7
     | '/cart/'
     | '/checkout/'
     | '/order/'
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/profile/orders'
+    | '/profile/recently-reviewed'
     | '/profile/wishlist'
     | '/auth/'
     | '/profile/'
@@ -208,19 +161,13 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/kits/$kitId'
-<<<<<<< HEAD
-    | '/profile/orders'
-    | '/profile/recently-reviewed'
-    | '/profile/wishlist'
-    | '/auth'
-=======
->>>>>>> fd454a687f10a4a53cbe61ab3e0f2d16231e8de7
     | '/cart'
     | '/checkout'
     | '/order'
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/profile/orders'
+    | '/profile/recently-reviewed'
     | '/profile/wishlist'
     | '/auth'
     | '/profile'
@@ -230,19 +177,13 @@ export interface FileRouteTypes {
     | '/(authLayout)'
     | '/(profileLayout)'
     | '/kits/$kitId'
-<<<<<<< HEAD
-    | '/profile/orders'
-    | '/profile/recently-reviewed'
-    | '/profile/wishlist'
-    | '/auth/'
-=======
->>>>>>> fd454a687f10a4a53cbe61ab3e0f2d16231e8de7
     | '/cart/'
     | '/checkout/'
     | '/order/'
     | '/(authLayout)/auth/sign-in'
     | '/(authLayout)/auth/sign-up'
     | '/(profileLayout)/profile/orders'
+    | '/(profileLayout)/profile/recently-reviewed'
     | '/(profileLayout)/profile/wishlist'
     | '/(authLayout)/auth/'
     | '/(profileLayout)/profile/'
@@ -302,37 +243,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CartIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-<<<<<<< HEAD
-    '/auth/': {
-      id: '/auth/'
-      path: '/'
-      fullPath: '/auth/'
-      preLoaderRoute: typeof AuthIndexRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
-    '/profile/wishlist': {
-      id: '/profile/wishlist'
-      path: '/wishlist'
-      fullPath: '/profile/wishlist'
-      preLoaderRoute: typeof ProfileWishlistRouteImport
-      parentRoute: typeof ProfileRouteRoute
-    }
-    '/profile/recently-reviewed': {
-      id: '/profile/recently-reviewed'
-      path: '/recently-reviewed'
-      fullPath: '/profile/recently-reviewed'
-      preLoaderRoute: typeof ProfileRecentlyReviewedRouteImport
-      parentRoute: typeof ProfileRouteRoute
-    }
-    '/profile/orders': {
-      id: '/profile/orders'
-      path: '/orders'
-      fullPath: '/profile/orders'
-      preLoaderRoute: typeof ProfileOrdersRouteImport
-      parentRoute: typeof ProfileRouteRoute
-    }
-=======
->>>>>>> fd454a687f10a4a53cbe61ab3e0f2d16231e8de7
     '/kits/$kitId': {
       id: '/kits/$kitId'
       path: '/kits/$kitId'
@@ -359,6 +269,13 @@ declare module '@tanstack/react-router' {
       path: '/profile/wishlist'
       fullPath: '/profile/wishlist'
       preLoaderRoute: typeof profileLayoutProfileWishlistRouteImport
+      parentRoute: typeof profileLayoutRouteRoute
+    }
+    '/(profileLayout)/profile/recently-reviewed': {
+      id: '/(profileLayout)/profile/recently-reviewed'
+      path: '/profile/recently-reviewed'
+      fullPath: '/profile/recently-reviewed'
+      preLoaderRoute: typeof profileLayoutProfileRecentlyReviewedRouteImport
       parentRoute: typeof profileLayoutRouteRoute
     }
     '/(profileLayout)/profile/orders': {
@@ -401,31 +318,19 @@ const authLayoutRouteRouteWithChildren = authLayoutRouteRoute._addFileChildren(
   authLayoutRouteRouteChildren,
 )
 
-<<<<<<< HEAD
-interface ProfileRouteRouteChildren {
-  ProfileOrdersRoute: typeof ProfileOrdersRoute
-  ProfileRecentlyReviewedRoute: typeof ProfileRecentlyReviewedRoute
-  ProfileWishlistRoute: typeof ProfileWishlistRoute
-  ProfileIndexRoute: typeof ProfileIndexRoute
-}
-
-const ProfileRouteRouteChildren: ProfileRouteRouteChildren = {
-  ProfileOrdersRoute: ProfileOrdersRoute,
-  ProfileRecentlyReviewedRoute: ProfileRecentlyReviewedRoute,
-  ProfileWishlistRoute: ProfileWishlistRoute,
-  ProfileIndexRoute: ProfileIndexRoute,
-=======
 interface profileLayoutRouteRouteChildren {
   profileLayoutProfileOrdersRoute: typeof profileLayoutProfileOrdersRoute
+  profileLayoutProfileRecentlyReviewedRoute: typeof profileLayoutProfileRecentlyReviewedRoute
   profileLayoutProfileWishlistRoute: typeof profileLayoutProfileWishlistRoute
   profileLayoutProfileIndexRoute: typeof profileLayoutProfileIndexRoute
 }
 
 const profileLayoutRouteRouteChildren: profileLayoutRouteRouteChildren = {
   profileLayoutProfileOrdersRoute: profileLayoutProfileOrdersRoute,
+  profileLayoutProfileRecentlyReviewedRoute:
+    profileLayoutProfileRecentlyReviewedRoute,
   profileLayoutProfileWishlistRoute: profileLayoutProfileWishlistRoute,
   profileLayoutProfileIndexRoute: profileLayoutProfileIndexRoute,
->>>>>>> fd454a687f10a4a53cbe61ab3e0f2d16231e8de7
 }
 
 const profileLayoutRouteRouteWithChildren =

@@ -11,7 +11,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { ContainedButton } from './ui/Button';
 import { OutlinedButton } from './ui/Button';
-import { DeleteConfirmationModal } from './DeleteConfirmationModal';
+import { ConfirmationModal } from './ConfirmationModal';
 
 const StyledButtonGroup = styled(ButtonGroup)({
   display: 'flex',
@@ -144,13 +144,13 @@ export const CartItem = ({
         </Box>
         <Divider sx={{ margin: '40px 0' }} />
       </Stack>
-      <DeleteConfirmationModal
+      <ConfirmationModal
         title="Are you sure you want to remove this kit from the cart?"
         description="Confirm to continue or cancel."
         open={removeModalOpen}
         onClose={() => setRemoveModalOpen(false)}
-        onDelete={handleRemoveItem}
-        deleteText="Remove"
+        onAction={handleRemoveItem}
+        actionText="Remove"
       />
     </>
   );

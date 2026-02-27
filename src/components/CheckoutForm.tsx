@@ -24,19 +24,16 @@ const mapboxToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 interface CheckoutProps {
   isLoading: boolean;
   mapDialogOpen: boolean;
-  onSubmit: (data: CheckoutSchema) => void;
   setMapDialogOpen: (open: boolean) => void;
 }
 
 export const CheckoutForm = ({
   isLoading,
-  onSubmit,
   mapDialogOpen,
   setMapDialogOpen,
 }: CheckoutProps) => {
   const {
     register,
-    handleSubmit,
     setValue,
     formState: { errors },
   } = useFormContext<CheckoutSchema>();
@@ -59,108 +56,106 @@ export const CheckoutForm = ({
 
   return (
     <Box sx={{ width: 750 }}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Link to="/cart">Back to cart</Link>
-        <Typography variant="h2" sx={{ mt: (theme) => theme.spacing(3) }}>
-          Checkout
+      <Link to="/cart">Back to cart</Link>
+      <Typography variant="h2" sx={{ mt: (theme) => theme.spacing(3) }}>
+        Checkout
+      </Typography>
+      <Stack gap={3}>
+        <Typography variant="h6" sx={{ mt: 8, mb: 3 }}>
+          Personal info
         </Typography>
-        <Stack>
-          <Typography variant="h6" sx={{ mt: 8, mb: 3 }}>
-            Personal info
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid size={4}>
-              <LabeledTextfield
-                label="Name"
-                {...register('name')}
-                placeholder="Type your name..."
-                errorMessage={errors.name?.message}
-                reserveErrorSpace
-              />
-            </Grid>
-            <Grid size={4}>
-              <LabeledTextfield
-                label="Surname"
-                {...register('surname')}
-                placeholder="Type your surname..."
-                errorMessage={errors.surname?.message}
-                reserveErrorSpace
-              />
-            </Grid>
-            <Grid size={4}>
-              <LabeledTextfield
-                label="Email"
-                placeholder="example@gmail.com"
-                errorMessage={errors.email?.message}
-                {...register('email')}
-                reserveErrorSpace
-              />
-            </Grid>
+        <Grid container spacing={2}>
+          <Grid size={4}>
+            <LabeledTextfield
+              label="Name"
+              {...register('name')}
+              placeholder="Type your name..."
+              errorMessage={errors.name?.message}
+              reserveErrorSpace
+            />
           </Grid>
-          <Grid container spacing={2}>
-            <Grid size={6}>
-              <LabeledTextfield
-                label="Latitude"
-                {...register('latitude')}
-                placeholder="40.746603"
-                errorMessage={errors.latitude?.message}
-                reserveErrorSpace
-                disabled
-              />
-            </Grid>
-            <Grid size={6}>
-              <LabeledTextfield
-                label="Longitude"
-                {...register('longitude')}
-                placeholder="-73.982700"
-                errorMessage={errors.longitude?.message}
-                reserveErrorSpace
-                disabled
-              />
-            </Grid>
+          <Grid size={4}>
+            <LabeledTextfield
+              label="Surname"
+              {...register('surname')}
+              placeholder="Type your surname..."
+              errorMessage={errors.surname?.message}
+              reserveErrorSpace
+            />
           </Grid>
-          <ContainedButton
-            type="button"
-            size="large"
-            sx={{ mb: 3, alignSelf: 'flex-start' }}
-            onClick={() => setMapDialogOpen(true)}
-          >
-            Choose your location
-          </ContainedButton>
-        </Stack>
-        <Divider />
-        <Typography variant="h6" sx={{ my: 3 }}>
-          Payment info
-        </Typography>
-        <Box
-          sx={{
-            border: (theme) => `1px solid ${theme.palette.text.secondary}`,
-            borderRadius: '8px',
-            p: 2,
-            maxWidth: '100%',
-            height: '56px',
-          }}
+          <Grid size={4}>
+            <LabeledTextfield
+              label="Email"
+              placeholder="example@gmail.com"
+              errorMessage={errors.email?.message}
+              {...register('email')}
+              reserveErrorSpace
+            />
+          </Grid>
+        </Grid>
+        <Grid container spacing={2}>
+          <Grid size={6}>
+            <LabeledTextfield
+              label="Latitude"
+              {...register('latitude')}
+              placeholder="Choose your location..."
+              errorMessage={errors.latitude?.message}
+              reserveErrorSpace
+              disabled
+            />
+          </Grid>
+          <Grid size={6}>
+            <LabeledTextfield
+              label="Longitude"
+              {...register('longitude')}
+              placeholder="Choose your location..."
+              errorMessage={errors.longitude?.message}
+              reserveErrorSpace
+              disabled
+            />
+          </Grid>
+        </Grid>
+        <ContainedButton
+          type="button"
+          size="large"
+          sx={{ mb: 3, alignSelf: 'flex-start' }}
+          onClick={() => setMapDialogOpen(true)}
         >
-          <CardElement
-            options={{
-              hidePostalCode: true,
-              style: {
-                base: {
-                  fontSize: '16px',
-                  color: '#4F46E5',
-                  fontFamily: 'Work Sans',
-                  '::placeholder': {
-                    color: '#94A3B8',
-                  },
-                },
-                invalid: {
-                  color: 'error.main',
+          Choose your location
+        </ContainedButton>
+      </Stack>
+      <Divider />
+      <Typography variant="h6" sx={{ my: 3 }}>
+        Payment info
+      </Typography>
+      <Box
+        sx={{
+          border: (theme) => `1px solid ${theme.palette.text.secondary}`,
+          borderRadius: '8px',
+          p: 2,
+          maxWidth: '100%',
+          height: '56px',
+        }}
+      >
+        <CardElement
+          options={{
+            hidePostalCode: true,
+            style: {
+              base: {
+                fontSize: '16px',
+                color: '#4F46E5',
+                fontFamily: 'Work Sans',
+                '::placeholder': {
+                  color: '#94A3B8',
                 },
               },
-            }}
-          />
-        </Box>
-      </form>
+              invalid: {
+                color: 'error.main',
+              },
+            },
+          }}
+        />
+      </Box>
       <Dialog
         open={mapDialogOpen}
         onClose={() => !isLoading && setMapDialogOpen(false)}

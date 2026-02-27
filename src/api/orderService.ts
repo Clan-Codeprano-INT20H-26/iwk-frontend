@@ -3,12 +3,19 @@ import { api } from './authAxiosInstance';
 import type { Coordinates } from '@/types/coordinates';
 
 export interface OrderKit {
-  id: string;
+  kitId: string;
   quantity: number;
 }
 
-interface OrderBody extends Coordinates {
-  kitId: OrderKit[];
+interface CreateIntentBody {
+  items: OrderKit[];
+}
+
+type CreateOrderBody = CreateIntentBody & Coordinates;
+
+interface IntentResponse {
+  clientSecret: string;
+  totalAmount: number;
 }
 
 interface GetOrdersParams {
@@ -37,13 +44,21 @@ export class OrderService {
     return data;
   }
 
-  async createOrder(order: OrderBody): Promise<Order> {
+  async createOrder(order: CreateOrderBody): Promise<Order> {
     const { data } = await api.post<Order>('/Order', order);
     return data;
   }
 
   async calculateTax(params: Coordinates): Promise<number> {
     const { data } = await api.get<number>('/Tax', { params });
+    return data;
+  }
+
+  async createIntent(order: CreateIntentBody): Promise<IntentResponse> {
+    const { data } = await api.post<IntentResponse>(
+      `/Payment/create-intent`,
+      order
+    );
     return data;
   }
 }

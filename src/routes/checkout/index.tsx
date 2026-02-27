@@ -2,7 +2,7 @@ import { CheckoutForm } from '@/components/CheckoutForm';
 import { Header } from '@/components/Header';
 import { OrderSummary } from '@/components/OrderSummary';
 import Stack from '@mui/material/Stack';
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { checkoutSchema, type CheckoutSchema } from '@/schema/checkout.schema';
@@ -12,6 +12,7 @@ import toast from 'react-hot-toast';
 import { useCart } from '@/lib/hooks/useCart';
 import { PageLoader } from '@/components/PageLoader';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import { useUserStore } from '@/store/userStore';
 
 const orderService = new OrderService();
 
@@ -19,6 +20,7 @@ const CheckoutPage = () => {
   const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
+  const user = useUserStore((state) => state.user)!;
   const [isLoading, setIsLoading] = useState(false);
   const [taxPercent, setTaxPercent] = useState<number>();
   const [mapDialogOpen, setMapDialogOpen] = useState(false);
@@ -30,7 +32,7 @@ const CheckoutPage = () => {
     defaultValues: {
       name: '',
       surname: '',
-      email: '',
+      email: user.email,
       latitude: '',
       longitude: '',
     },
@@ -38,6 +40,7 @@ const CheckoutPage = () => {
 
   const {
     control,
+    handleSubmit,
     formState: { isSubmitting },
   } = methods;
 
@@ -45,7 +48,7 @@ const CheckoutPage = () => {
   const longitude = useWatch({ control, name: 'longitude' });
 
   const kitIds = cart.map((item) => ({
-    id: item.id,
+    kitId: item.id,
     quantity: item.quantity,
   }));
 
@@ -54,25 +57,19 @@ const CheckoutPage = () => {
       const order = await orderService.createOrder({
         latitude,
         longitude,
-        kitId: kitIds,
+        items: kitIds,
       });
-      navigate({ to: '/order/$orderId', params: { orderId: order.id } });
+      navigate({ to: '/order', search: { id: order.id } });
     } catch {
       toast.error('Failed to create order!');
     }
   };
 
-  const handleSubmit = async (data: CheckoutSchema) => {
-    console.log(data);
-
+  const onSubmit = async (data: CheckoutSchema) => {
     try {
-      // const body = {
-      //   ...data,
-      //   orderNumber,
-      //   kitIds,
-      // };
-
-      // const { clientSecret } = await orderService.createPaymentIntent(body);
+      const { clientSecret } = await orderService.createIntent({
+        items: kitIds,
+      });
 
       if (!stripe || !elements) {
         onPaymentComplete();
@@ -85,26 +82,25 @@ const CheckoutPage = () => {
         return;
       }
 
-      // const result = await stripe.confirmCardPayment(resJson.clientSecret, {
-      //   payment_method: {
-      //     card: cardEl,
-      //     billing_details: {
-      //       name: `${data.name} ${data.surname}`,
-      //       email: data.email,
-      //     },
-      //   },
-      // });
+      const order = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: cardEl,
+          billing_details: {
+            name: `${data.name} ${data.surname}`,
+            email: data.email,
+          },
+        },
+      });
 
-      // if (result.error) {
-      //   setServerError(result.error.message || 'Payment failed');
-      //   return;
-      // }
+      if (order.error) {
+        toast.error(order.error.message || 'Payment failed');
+        return;
+      }
 
-      // if (result.paymentIntent?.status === 'succeeded') {
-      //   finalizeOrder();
-      //   elements.getElement(CardElement)?.clear();
-      //   return;
-      // }
+      if (order.paymentIntent?.status === 'succeeded') {
+        onPaymentComplete();
+        return;
+      }
     } catch {
       toast.error('Failed to create order!');
     }
@@ -146,11 +142,14 @@ const CheckoutPage = () => {
         <FormProvider {...methods}>
           <CheckoutForm
             isLoading={isLoading}
-            onSubmit={handleSubmit}
             mapDialogOpen={mapDialogOpen}
             setMapDialogOpen={setMapDialogOpen}
           />
-          <OrderSummary isCheckout taxPercent={taxPercent} />
+          <OrderSummary
+            isCheckout
+            taxPercent={taxPercent}
+            onConfirmAndPay={handleSubmit(onSubmit)}
+          />
         </FormProvider>
         {isSubmitting && <PageLoader open={isSubmitting} />}
       </Stack>
@@ -160,4 +159,16 @@ const CheckoutPage = () => {
 
 export const Route = createFileRoute('/checkout/')({
   component: CheckoutPage,
+  loader: () => {
+    const cart = localStorage.getItem('cart');
+    const { user } = useUserStore.getState();
+
+    if (!user) {
+      throw redirect({ to: '/auth/sign-in' });
+    }
+
+    if (!cart || cart.length === 0) {
+      throw redirect({ to: '/' });
+    }
+  },
 });

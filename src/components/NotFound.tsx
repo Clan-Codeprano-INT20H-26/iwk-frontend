@@ -41,17 +41,16 @@ export const NotFound = () => {
             </ContainedButton>
           </Stack>
         </Stack>
-        <img
+        <Stack
+          component="img"
           src="/not-found.png"
           alt="Not Found"
-          style={{
+          sx={{
             position: 'absolute',
             top: 0,
             right: 0,
-            maxWidth: 1100,
+            maxWidth: '1100px',
           }}
-          width="55%"
-          height="100%"
         />
       </Stack>
     </>

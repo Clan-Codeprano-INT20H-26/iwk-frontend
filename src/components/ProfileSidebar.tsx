@@ -105,7 +105,7 @@ export const ProfileSidebar = () => {
               '& svg': { width: '22px', height: '22px' },
             }}
           >
-            <EditIcon />
+            <EditIcon sx={{ color: 'grey.500' }} />
           </IconButton>
           <input
             type="file"

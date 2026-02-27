@@ -23,18 +23,15 @@ const OrderPage = () => {
           display: 'flex',
           justifyContent: 'space-evenly',
           alignItems: 'end',
-          paddingTop: '120px',
+          paddingTop: '200px',
         }}
       >
         <Stack gap={5}>
           <Stack gap={1}>
             <Typography variant="h1">THANK YOU</Typography>
             <Stack direction="row" gap={1}>
-              <Typography variant="h2" fontWeight={300}>
+              <Typography variant="h3" fontWeight={300}>
                 for your order
-              </Typography>
-              <Typography variant="h2" color="primary.main">
-                #{id}
               </Typography>
             </Stack>
           </Stack>
@@ -49,11 +46,14 @@ const OrderPage = () => {
           <Stack direction="row" gap={2}>
             <OutlinedButton
               size="large"
-              onClick={() => navigate({ to: '/profile/orders' })}
+              onClick={() => navigate({ to: '/profile/orders', replace: true })}
             >
               View Order
             </OutlinedButton>
-            <ContainedButton size="large" onClick={() => navigate({ to: '/' })}>
+            <ContainedButton
+              size="large"
+              onClick={() => navigate({ to: '/', replace: true })}
+            >
               Continue Shopping
             </ContainedButton>
           </Stack>

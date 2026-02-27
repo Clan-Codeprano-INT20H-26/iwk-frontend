@@ -1,5 +1,5 @@
 import { useCart } from '@/lib/hooks/useCart';
-import type { CartItem as CartItemProps } from '@/types/cartItem';
+import type { OrderItem } from '@/types/orderItem';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { styled } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
@@ -47,7 +47,7 @@ export const CartItem = ({
   quantity,
   images,
   seller,
-}: CartItemProps) => {
+}: OrderItem) => {
   const navigate = useNavigate();
   const { removeItem, decreaseQuantity, increaseQuantity } = useCart();
   const [removeModalOpen, setRemoveModalOpen] = useState(false);

@@ -107,6 +107,8 @@ export const OrderSummary = ({
       <Tooltip
         title="You must be logged in to checkout"
         arrow
+        disableFocusListener={!!user}
+        disableTouchListener={!!user}
         disableHoverListener={!!user}
       >
         <Stack>

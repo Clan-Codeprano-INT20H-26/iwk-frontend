@@ -19,7 +19,7 @@ import { Route as KitsKitIdRouteImport } from './routes/kits/$kitId'
 import { Route as profileLayoutProfileIndexRouteImport } from './routes/(profileLayout)/profile/index'
 import { Route as authLayoutAuthIndexRouteImport } from './routes/(authLayout)/auth/index'
 import { Route as profileLayoutProfileWishlistRouteImport } from './routes/(profileLayout)/profile/wishlist'
-import { Route as profileLayoutProfileRecentlyReviewedRouteImport } from './routes/(profileLayout)/profile/recently-reviewed'
+import { Route as profileLayoutProfileRecentlyViewedRouteImport } from './routes/(profileLayout)/profile/recently-viewed'
 import { Route as profileLayoutProfileOrdersRouteImport } from './routes/(profileLayout)/profile/orders'
 import { Route as authLayoutAuthSignUpRouteImport } from './routes/(authLayout)/auth/sign-up'
 import { Route as authLayoutAuthSignInRouteImport } from './routes/(authLayout)/auth/sign-in'
@@ -74,10 +74,10 @@ const profileLayoutProfileWishlistRoute =
     path: '/profile/wishlist',
     getParentRoute: () => profileLayoutRouteRoute,
   } as any)
-const profileLayoutProfileRecentlyReviewedRoute =
-  profileLayoutProfileRecentlyReviewedRouteImport.update({
-    id: '/profile/recently-reviewed',
-    path: '/profile/recently-reviewed',
+const profileLayoutProfileRecentlyViewedRoute =
+  profileLayoutProfileRecentlyViewedRouteImport.update({
+    id: '/profile/recently-viewed',
+    path: '/profile/recently-viewed',
     getParentRoute: () => profileLayoutRouteRoute,
   } as any)
 const profileLayoutProfileOrdersRoute =
@@ -106,7 +106,7 @@ export interface FileRoutesByFullPath {
   '/auth/sign-in': typeof authLayoutAuthSignInRoute
   '/auth/sign-up': typeof authLayoutAuthSignUpRoute
   '/profile/orders': typeof profileLayoutProfileOrdersRoute
-  '/profile/recently-reviewed': typeof profileLayoutProfileRecentlyReviewedRoute
+  '/profile/recently-viewed': typeof profileLayoutProfileRecentlyViewedRoute
   '/profile/wishlist': typeof profileLayoutProfileWishlistRoute
   '/auth/': typeof authLayoutAuthIndexRoute
   '/profile/': typeof profileLayoutProfileIndexRoute
@@ -120,7 +120,7 @@ export interface FileRoutesByTo {
   '/auth/sign-in': typeof authLayoutAuthSignInRoute
   '/auth/sign-up': typeof authLayoutAuthSignUpRoute
   '/profile/orders': typeof profileLayoutProfileOrdersRoute
-  '/profile/recently-reviewed': typeof profileLayoutProfileRecentlyReviewedRoute
+  '/profile/recently-viewed': typeof profileLayoutProfileRecentlyViewedRoute
   '/profile/wishlist': typeof profileLayoutProfileWishlistRoute
   '/auth': typeof authLayoutAuthIndexRoute
   '/profile': typeof profileLayoutProfileIndexRoute
@@ -137,7 +137,7 @@ export interface FileRoutesById {
   '/(authLayout)/auth/sign-in': typeof authLayoutAuthSignInRoute
   '/(authLayout)/auth/sign-up': typeof authLayoutAuthSignUpRoute
   '/(profileLayout)/profile/orders': typeof profileLayoutProfileOrdersRoute
-  '/(profileLayout)/profile/recently-reviewed': typeof profileLayoutProfileRecentlyReviewedRoute
+  '/(profileLayout)/profile/recently-viewed': typeof profileLayoutProfileRecentlyViewedRoute
   '/(profileLayout)/profile/wishlist': typeof profileLayoutProfileWishlistRoute
   '/(authLayout)/auth/': typeof authLayoutAuthIndexRoute
   '/(profileLayout)/profile/': typeof profileLayoutProfileIndexRoute
@@ -153,7 +153,7 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/profile/orders'
-    | '/profile/recently-reviewed'
+    | '/profile/recently-viewed'
     | '/profile/wishlist'
     | '/auth/'
     | '/profile/'
@@ -167,7 +167,7 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/profile/orders'
-    | '/profile/recently-reviewed'
+    | '/profile/recently-viewed'
     | '/profile/wishlist'
     | '/auth'
     | '/profile'
@@ -183,7 +183,7 @@ export interface FileRouteTypes {
     | '/(authLayout)/auth/sign-in'
     | '/(authLayout)/auth/sign-up'
     | '/(profileLayout)/profile/orders'
-    | '/(profileLayout)/profile/recently-reviewed'
+    | '/(profileLayout)/profile/recently-viewed'
     | '/(profileLayout)/profile/wishlist'
     | '/(authLayout)/auth/'
     | '/(profileLayout)/profile/'
@@ -271,11 +271,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof profileLayoutProfileWishlistRouteImport
       parentRoute: typeof profileLayoutRouteRoute
     }
-    '/(profileLayout)/profile/recently-reviewed': {
-      id: '/(profileLayout)/profile/recently-reviewed'
-      path: '/profile/recently-reviewed'
-      fullPath: '/profile/recently-reviewed'
-      preLoaderRoute: typeof profileLayoutProfileRecentlyReviewedRouteImport
+    '/(profileLayout)/profile/recently-viewed': {
+      id: '/(profileLayout)/profile/recently-viewed'
+      path: '/profile/recently-viewed'
+      fullPath: '/profile/recently-viewed'
+      preLoaderRoute: typeof profileLayoutProfileRecentlyViewedRouteImport
       parentRoute: typeof profileLayoutRouteRoute
     }
     '/(profileLayout)/profile/orders': {
@@ -320,15 +320,15 @@ const authLayoutRouteRouteWithChildren = authLayoutRouteRoute._addFileChildren(
 
 interface profileLayoutRouteRouteChildren {
   profileLayoutProfileOrdersRoute: typeof profileLayoutProfileOrdersRoute
-  profileLayoutProfileRecentlyReviewedRoute: typeof profileLayoutProfileRecentlyReviewedRoute
+  profileLayoutProfileRecentlyViewedRoute: typeof profileLayoutProfileRecentlyViewedRoute
   profileLayoutProfileWishlistRoute: typeof profileLayoutProfileWishlistRoute
   profileLayoutProfileIndexRoute: typeof profileLayoutProfileIndexRoute
 }
 
 const profileLayoutRouteRouteChildren: profileLayoutRouteRouteChildren = {
   profileLayoutProfileOrdersRoute: profileLayoutProfileOrdersRoute,
-  profileLayoutProfileRecentlyReviewedRoute:
-    profileLayoutProfileRecentlyReviewedRoute,
+  profileLayoutProfileRecentlyViewedRoute:
+    profileLayoutProfileRecentlyViewedRoute,
   profileLayoutProfileWishlistRoute: profileLayoutProfileWishlistRoute,
   profileLayoutProfileIndexRoute: profileLayoutProfileIndexRoute,
 }

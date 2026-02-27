@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import z from 'zod';
 import { Header } from '@/components/Header';
-import { KitCard } from '@/components/KitCard';
 import { Loader } from '@/components/ui/Loader';
 import { useKitStore } from '@/store/kitStore';
-import Grid from '@mui/material/Grid';
 import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router';
 import { headerHeight } from '@/constants/headerHeight';
 import { useDebounce } from '@/lib/hooks/useDebounce';
@@ -13,6 +11,7 @@ import Stack from '@mui/material/Stack';
 import MenuItem from '@mui/material/MenuItem';
 import { Select } from '@/components/ui/Select';
 import type { SortCriteria } from '@/types/sortCriteria';
+import { KitList } from '@/components/KitList';
 
 const normalizeSelectValue = (
   sortBy?: SortCriteria,
@@ -123,13 +122,7 @@ const CatalogPage = () => {
                 </MenuItem>
               ))}
             </Select>
-            <Grid container spacing={5}>
-              {kits.map((kit) => (
-                <Grid size={{ md: 4, lg: 3, xl: 2 }} key={kit.id}>
-                  <KitCard {...kit} />
-                </Grid>
-              ))}
-            </Grid>
+            <KitList kits={kits} />
           </Stack>
         )}
         {!isLoading && !isDebouncing && (

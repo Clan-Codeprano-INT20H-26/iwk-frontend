@@ -29,9 +29,9 @@ const navLinks = [
     to: '/profile/wishlist',
   },
   {
-    label: 'Recently reviewed',
+    label: 'Recently viewed',
     icon: <ManageSearchIcon />,
-    to: '/profile/recently-reviewed',
+    to: '/profile/recently-viewed',
   },
 ] as const;
 
@@ -122,7 +122,7 @@ export const ProfileSidebar = () => {
           />
         </Stack>
 
-        <Stack gap="4px">
+        <Stack>
           <Typography variant="body2" color="text.secondary">
             Welcome
           </Typography>

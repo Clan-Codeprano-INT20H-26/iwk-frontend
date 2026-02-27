@@ -1,14 +1,15 @@
 import type { Order } from '@/types/order';
 import { api } from './authAxiosInstance';
 import type { Coordinates } from '@/types/coordinates';
+import type { PaginatedResponse } from '@/types/paginatedResponse';
 
-export interface OrderKit {
+export interface IntentKit {
   kitId: string;
   quantity: number;
 }
 
 interface CreateIntentBody {
-  items: OrderKit[];
+  items: IntentKit[];
 }
 
 type CreateOrderBody = CreateIntentBody & Coordinates;
@@ -18,7 +19,7 @@ interface IntentResponse {
   totalAmount: number;
 }
 
-interface GetOrdersParams {
+export interface GetOrdersParams {
   PageNumber: number;
   PageSize: number;
   FromDate: string;
@@ -39,8 +40,12 @@ export class OrderService {
     OrderService.instance = this;
   }
 
-  async getOrders(params?: Partial<GetOrdersParams>): Promise<Order[]> {
-    const { data } = await api.get<Order[]>('/Order', { params });
+  async getOrders(
+    params?: Partial<GetOrdersParams>
+  ): Promise<PaginatedResponse<Order>> {
+    const { data } = await api.get<PaginatedResponse<Order>>('/Order', {
+      params,
+    });
     return data;
   }
 
@@ -60,5 +65,13 @@ export class OrderService {
       order
     );
     return data;
+  }
+
+  async uploadCSV(formData: FormData) {
+    await api.post('/Order/import', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
   }
 }

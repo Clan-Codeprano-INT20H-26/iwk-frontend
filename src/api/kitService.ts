@@ -1,19 +1,12 @@
 import type { Kit } from '@/types/kit';
 import { api } from './authAxiosInstance';
-import type { SortCriteria } from '@/types/sortCriteria';
-
-interface KitResponse {
-  items: Kit[];
-  totalCount: number;
-  totalPages: number;
-  pageNumber: number;
-  pageSize: number;
-}
+import type { PaginatedResponse } from '@/types/paginatedResponse';
+import type { KitSortCriteria } from '@/types/kitSortCriteria';
 
 export interface GetKitsParams {
   PageNumber: number;
   SearchTerm: string;
-  SortBy: SortCriteria;
+  SortBy: KitSortCriteria;
   IsDescending: boolean;
 }
 
@@ -27,7 +20,9 @@ export class KitService {
     KitService.instance = this;
   }
 
-  async getKits(params?: Partial<GetKitsParams>): Promise<KitResponse> {
+  async getKits(
+    params?: Partial<GetKitsParams>
+  ): Promise<PaginatedResponse<Kit>> {
     const queryParams = new URLSearchParams();
 
     if (params) {
@@ -37,7 +32,7 @@ export class KitService {
       });
     }
 
-    const { data } = await api.get<KitResponse>(
+    const { data } = await api.get<PaginatedResponse<Kit>>(
       `/Kit?${queryParams.toString()}`
     );
     return data;

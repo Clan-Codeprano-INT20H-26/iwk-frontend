@@ -1,9 +1,9 @@
 import type { Kit } from '@/types/kit';
-import type { OrderItem } from '@/types/orderItem';
+import type { OrderKit } from '@/types/orderKit';
 import { useLocalStorage } from './useLocalStorage';
 
 export const useCart = () => {
-  const { value: cart, setValue: setCart } = useLocalStorage<OrderItem[]>(
+  const { value: cart, setValue: setCart } = useLocalStorage<OrderKit[]>(
     'cart',
     []
   );

@@ -110,6 +110,6 @@ const SignUpPage = () => {
   );
 };
 
-export const Route = createFileRoute('/auth/sign-up')({
+export const Route = createFileRoute('/(authLayout)/auth/sign-up')({
   component: SignUpPage,
 });

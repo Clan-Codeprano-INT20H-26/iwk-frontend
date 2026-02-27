@@ -18,7 +18,7 @@ const ProfileLayout = () => {
   );
 };
 
-export const Route = createFileRoute('/profile')({
+export const Route = createFileRoute('/(profileLayout)')({
   component: ProfileLayout,
   loader: async () => {
     const { user, isLoading } = useUserStore.getState();

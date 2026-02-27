@@ -66,4 +66,12 @@ export class OrderService {
     );
     return data;
   }
+
+  async uploadCSV(formData: FormData) {
+    await api.post('/Order/import', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
 }

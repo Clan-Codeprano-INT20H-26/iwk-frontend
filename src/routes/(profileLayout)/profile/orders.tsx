@@ -1,5 +1,5 @@
 import dayjs, { type Dayjs } from 'dayjs';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ChangeEvent, useRef } from 'react';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Pagination from '@mui/material/Pagination';
@@ -12,6 +12,11 @@ import { useUserStore } from '@/store/userStore';
 import { Select } from '@/components/ui/Select';
 import { Loader } from '@/components/ui/Loader';
 import { OrderItem } from '@/components/OrderItem';
+import { ContainedButton } from '@/components/ui/Button';
+import toast from 'react-hot-toast';
+import { OrderService } from '@/api/orderService';
+
+const orderService = new OrderService();
 
 export type SortCriteria = 'createdAt' | 'totalAmount';
 
@@ -25,6 +30,7 @@ const sortOptions = [
 type SortOptionValue = (typeof sortOptions)[number]['value'];
 
 const OrdersPage = () => {
+  const user = useUserStore((state) => state.user);
   const orders = useUserStore((state) => state.orders);
   const totalPages = useUserStore((state) => state.totalPages);
   const initialPageNumber = useUserStore((state) => state.pageNumber);
@@ -37,6 +43,28 @@ const OrdersPage = () => {
   const [toDate, setToDate] = useState<Dayjs | null>(null);
   const [minDate, setMinDate] = useState<Dayjs>(dayjs());
   const [maxDate, setMaxDate] = useState<Dayjs>(dayjs());
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+          await orderService.uploadCSV(formData);
+          await getOrders();
+          toast.success('CSV file uploaded successfully');
+        } catch {
+          toast.error('Failed to update CSV file!');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   useEffect(() => {
     const newMinDate = dayjs(
@@ -60,7 +88,7 @@ const OrdersPage = () => {
     if (newMaxDate > maxDate) {
       setMaxDate(newMaxDate);
     }
-  }, [orders, minDate, maxDate]);
+  }, [orders]);
 
   const fromDateMax = toDate ?? maxDate;
   const toDateMin = fromDate ?? minDate;
@@ -74,8 +102,8 @@ const OrdersPage = () => {
         PageNumber: pageNumber,
         SortBy: sortCriteria,
         IsDescending: isDescending,
-        ...(fromDate && { FromDate: fromDate.toISOString() }),
-        ...(toDate && { ToDate: toDate?.toISOString() }),
+        ...(fromDate && { FromDate: fromDate.toISOString().split('T')[0] }),
+        ...(toDate && { ToDate: toDate?.toISOString().split('T')[0] }),
       });
     };
     handleLoadOrders();
@@ -84,7 +112,26 @@ const OrdersPage = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Stack gap={3}>
-        <Typography variant="h4">My Orders</Typography>
+        <Stack direction="row" gap={3}>
+          <Typography variant="h4">My Orders</Typography>
+          {user?.isAdmin && (
+            <>
+              <input
+                type="file"
+                accept=".csv"
+                ref={inputRef}
+                style={{ display: 'none' }}
+                onChange={handleFileChange}
+              />
+              <ContainedButton
+                color="success"
+                onClick={() => inputRef.current?.click()}
+              >
+                Import Orders CSV
+              </ContainedButton>
+            </>
+          )}
+        </Stack>
         <Stack gap={2}>
           <Stack direction="row" gap={2} justifyContent="space-between">
             <Stack direction="row" gap={2}>

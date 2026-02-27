@@ -52,6 +52,14 @@ export class UserService {
     return data.user;
   }
 
+  async uploadAvatar(formData: FormData) {
+    await api.post<UserResponse>('/upload-avatar', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+
   async getUser(): Promise<User> {
     const { data: user } = await api.get<User>('/profile');
     return user;

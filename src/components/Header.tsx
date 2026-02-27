@@ -74,7 +74,7 @@ export const Header = ({
           </IconButton>
           {user ? (
             <IconButton
-              onClick={() => navigate({ to: '/profile' })}
+              onClick={() => navigate({ to: '/profile/orders' })}
               sx={{ p: 0 }}
             >
               <Avatar

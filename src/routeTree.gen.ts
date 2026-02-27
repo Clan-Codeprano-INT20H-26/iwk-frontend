@@ -12,10 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProfileIndexRouteImport } from './routes/profile/index'
+import { Route as OrderIndexRouteImport } from './routes/order/index'
 import { Route as CheckoutIndexRouteImport } from './routes/checkout/index'
 import { Route as CartIndexRouteImport } from './routes/cart/index'
 import { Route as AuthIndexRouteImport } from './routes/auth/index'
-import { Route as OrderOrderIdRouteImport } from './routes/order/$orderId'
+import { Route as ProfileOrdersRouteImport } from './routes/profile/orders'
 import { Route as KitsKitIdRouteImport } from './routes/kits/$kitId'
 import { Route as AuthSignUpRouteImport } from './routes/auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
@@ -35,6 +36,11 @@ const ProfileIndexRoute = ProfileIndexRouteImport.update({
   path: '/profile/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OrderIndexRoute = OrderIndexRouteImport.update({
+  id: '/order/',
+  path: '/order/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CheckoutIndexRoute = CheckoutIndexRouteImport.update({
   id: '/checkout/',
   path: '/checkout/',
@@ -50,9 +56,9 @@ const AuthIndexRoute = AuthIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthRouteRoute,
 } as any)
-const OrderOrderIdRoute = OrderOrderIdRouteImport.update({
-  id: '/order/$orderId',
-  path: '/order/$orderId',
+const ProfileOrdersRoute = ProfileOrdersRouteImport.update({
+  id: '/profile/orders',
+  path: '/profile/orders',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KitsKitIdRoute = KitsKitIdRouteImport.update({
@@ -77,10 +83,11 @@ export interface FileRoutesByFullPath {
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/kits/$kitId': typeof KitsKitIdRoute
-  '/order/$orderId': typeof OrderOrderIdRoute
+  '/profile/orders': typeof ProfileOrdersRoute
   '/auth/': typeof AuthIndexRoute
   '/cart/': typeof CartIndexRoute
   '/checkout/': typeof CheckoutIndexRoute
+  '/order/': typeof OrderIndexRoute
   '/profile/': typeof ProfileIndexRoute
 }
 export interface FileRoutesByTo {
@@ -88,10 +95,11 @@ export interface FileRoutesByTo {
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/kits/$kitId': typeof KitsKitIdRoute
-  '/order/$orderId': typeof OrderOrderIdRoute
+  '/profile/orders': typeof ProfileOrdersRoute
   '/auth': typeof AuthIndexRoute
   '/cart': typeof CartIndexRoute
   '/checkout': typeof CheckoutIndexRoute
+  '/order': typeof OrderIndexRoute
   '/profile': typeof ProfileIndexRoute
 }
 export interface FileRoutesById {
@@ -101,10 +109,11 @@ export interface FileRoutesById {
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/kits/$kitId': typeof KitsKitIdRoute
-  '/order/$orderId': typeof OrderOrderIdRoute
+  '/profile/orders': typeof ProfileOrdersRoute
   '/auth/': typeof AuthIndexRoute
   '/cart/': typeof CartIndexRoute
   '/checkout/': typeof CheckoutIndexRoute
+  '/order/': typeof OrderIndexRoute
   '/profile/': typeof ProfileIndexRoute
 }
 export interface FileRouteTypes {
@@ -115,10 +124,11 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/kits/$kitId'
-    | '/order/$orderId'
+    | '/profile/orders'
     | '/auth/'
     | '/cart/'
     | '/checkout/'
+    | '/order/'
     | '/profile/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -126,10 +136,11 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/kits/$kitId'
-    | '/order/$orderId'
+    | '/profile/orders'
     | '/auth'
     | '/cart'
     | '/checkout'
+    | '/order'
     | '/profile'
   id:
     | '__root__'
@@ -138,10 +149,11 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/kits/$kitId'
-    | '/order/$orderId'
+    | '/profile/orders'
     | '/auth/'
     | '/cart/'
     | '/checkout/'
+    | '/order/'
     | '/profile/'
   fileRoutesById: FileRoutesById
 }
@@ -149,9 +161,10 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   KitsKitIdRoute: typeof KitsKitIdRoute
-  OrderOrderIdRoute: typeof OrderOrderIdRoute
+  ProfileOrdersRoute: typeof ProfileOrdersRoute
   CartIndexRoute: typeof CartIndexRoute
   CheckoutIndexRoute: typeof CheckoutIndexRoute
+  OrderIndexRoute: typeof OrderIndexRoute
   ProfileIndexRoute: typeof ProfileIndexRoute
 }
 
@@ -178,6 +191,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/order/': {
+      id: '/order/'
+      path: '/order'
+      fullPath: '/order/'
+      preLoaderRoute: typeof OrderIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/checkout/': {
       id: '/checkout/'
       path: '/checkout'
@@ -199,11 +219,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIndexRouteImport
       parentRoute: typeof AuthRouteRoute
     }
-    '/order/$orderId': {
-      id: '/order/$orderId'
-      path: '/order/$orderId'
-      fullPath: '/order/$orderId'
-      preLoaderRoute: typeof OrderOrderIdRouteImport
+    '/profile/orders': {
+      id: '/profile/orders'
+      path: '/profile/orders'
+      fullPath: '/profile/orders'
+      preLoaderRoute: typeof ProfileOrdersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/kits/$kitId': {
@@ -250,9 +270,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   KitsKitIdRoute: KitsKitIdRoute,
-  OrderOrderIdRoute: OrderOrderIdRoute,
+  ProfileOrdersRoute: ProfileOrdersRoute,
   CartIndexRoute: CartIndexRoute,
   CheckoutIndexRoute: CheckoutIndexRoute,
+  OrderIndexRoute: OrderIndexRoute,
   ProfileIndexRoute: ProfileIndexRoute,
 }
 export const routeTree = rootRouteImport

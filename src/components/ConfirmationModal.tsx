@@ -8,14 +8,14 @@ import { styled } from '@mui/material/styles';
 import { IconButton } from './ui/IconButton';
 import { ContainedButton, OutlinedButton } from './ui/Button';
 
-interface DeleteConfirmationModalProps {
+interface ConfirmationModalProps {
   open: boolean;
   title: string;
   description: string;
   onClose: () => void;
-  onDelete: () => void;
+  onAction: () => void;
   cancelText?: string;
-  deleteText?: string;
+  actionText?: string;
 }
 
 const StyledDialog = styled(Dialog)({
@@ -28,15 +28,15 @@ const StyledDialog = styled(Dialog)({
   },
 });
 
-export const DeleteConfirmationModal = ({
+export const ConfirmationModal = ({
   open,
   title,
   description,
   onClose,
-  onDelete,
+  onAction,
   cancelText = 'Cancel',
-  deleteText = 'Delete',
-}: DeleteConfirmationModalProps) => {
+  actionText = 'Done',
+}: ConfirmationModalProps) => {
   return (
     <StyledDialog open={open} onClose={onClose}>
       <IconButton
@@ -60,10 +60,10 @@ export const DeleteConfirmationModal = ({
         </OutlinedButton>
         <ContainedButton
           size="large"
-          onClick={onDelete}
+          onClick={onAction}
           sx={{ width: '200px' }}
         >
-          {deleteText}
+          {actionText}
         </ContainedButton>
       </DialogActions>
     </StyledDialog>

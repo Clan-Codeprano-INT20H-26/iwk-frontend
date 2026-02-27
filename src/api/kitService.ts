@@ -1,5 +1,6 @@
 import type { Kit } from '@/types/kit';
 import { api } from './authAxiosInstance';
+import type { SortCriteria } from '@/types/sortCriteria';
 
 interface KitResponse {
   items: Kit[];
@@ -12,6 +13,8 @@ interface KitResponse {
 export interface GetKitsParams {
   PageNumber: number;
   SearchTerm: string;
+  SortBy: SortCriteria;
+  IsDescending: boolean;
 }
 
 export class KitService {
@@ -29,7 +32,7 @@ export class KitService {
 
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
-        if (!value) return;
+        if (value === undefined) return;
         queryParams.set(key, value.toString());
       });
     }

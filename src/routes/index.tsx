@@ -1,38 +1,66 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+import z from 'zod';
 import { Header } from '@/components/Header';
 import { KitCard } from '@/components/KitCard';
 import { Loader } from '@/components/ui/Loader';
 import { useKitStore } from '@/store/kitStore';
 import Grid from '@mui/material/Grid';
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router';
 import { headerHeight } from '@/constants/headerHeight';
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDebounce } from '@/lib/hooks/useDebounce';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import MenuItem from '@mui/material/MenuItem';
+import { Select } from '@/components/ui/Select';
+import type { SortCriteria } from '@/types/sortCriteria';
 
-interface SearchParams {
-  page?: number;
-  searchTerm?: string;
-}
+const normalizeSelectValue = (
+  sortBy?: SortCriteria,
+  isDescending?: boolean
+) => {
+  if (!sortBy) return '+name';
+  const sortDirection = isDescending ? '-' : '+';
+  return `${sortDirection}${sortBy}`;
+};
+
+const catalogSchema = z.object({
+  page: z.number().optional(),
+  searchTerm: z.string().optional(),
+  sortBy: z.enum(['name', 'price']).optional(),
+  desc: z.boolean().optional(),
+});
+
+const sortOptions = [
+  { value: '+name', label: 'Name: A to Z' },
+  { value: '-name', label: 'Name: Z to A' },
+  { value: '+price', label: 'Price: High to Low  ' },
+  { value: '-price', label: 'Price: Low to High' },
+] as const;
 
 const CatalogPage = () => {
   const navigate = useNavigate();
+  const { sortBy, desc: isDescending } = Route.useSearch();
   const [searchTerm, setSearchTerm] = useState('');
   const { debouncedValue, isDebouncing } = useDebounce(searchTerm, 1500);
   const debouncedValueRef = useRef(debouncedValue);
   const kits = useKitStore((state) => state.kits);
   const isLoading = useKitStore((state) => state.isLoading);
-  const setKits = useKitStore((state) => state.setKits);
   const totalPages = useKitStore((state) => state.totalPages);
   const pageNumber = useKitStore((state) => state.pageNumber);
+  const setKits = useKitStore((state) => state.setKits);
 
   const isEmpty = kits.length === 0;
 
   const handleParamsChange = useCallback(
-    (page?: number) => {
+    (page?: number, sortBy?: SortCriteria, isDescending?: boolean) => {
       navigate({
         to: '/',
-        search: { page, ...(debouncedValue && { searchTerm: debouncedValue }) },
+        search: {
+          page,
+          sortBy,
+          desc: isDescending,
+          ...(debouncedValue && { searchTerm: debouncedValue }),
+        },
       });
     },
     [navigate, debouncedValue]
@@ -62,7 +90,8 @@ const CatalogPage = () => {
       />
       <Stack
         justifyContent="space-between"
-        sx={{ padding: 4, minHeight: `calc(100vh - ${headerHeight})` }}
+        gap={4}
+        sx={{ p: 4, minHeight: `calc(100vh - ${headerHeight})` }}
       >
         {isLoading || isDebouncing ? (
           <Loader size={80} sx={{ m: 'auto' }} />
@@ -75,13 +104,33 @@ const CatalogPage = () => {
             No kits found. Try a different search or check back later.
           </Stack>
         ) : (
-          <Grid container spacing={5}>
-            {kits.map((kit) => (
-              <Grid size={2} key={kit.id}>
-                <KitCard {...kit} />
-              </Grid>
-            ))}
-          </Grid>
+          <Stack gap={3}>
+            <Select
+              value={normalizeSelectValue(sortBy, isDescending)}
+              onChange={(e) => {
+                const sortBy = (e.target.value as string).slice(1);
+                const isDescending = (e.target.value as string).startsWith('-');
+                handleParamsChange(
+                  pageNumber,
+                  sortBy as SortCriteria,
+                  isDescending
+                );
+              }}
+            >
+              {sortOptions.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
+            <Grid container spacing={5}>
+              {kits.map((kit) => (
+                <Grid size={{ md: 4, lg: 3, xl: 2 }} key={kit.id}>
+                  <KitCard {...kit} />
+                </Grid>
+              ))}
+            </Grid>
+          </Stack>
         )}
         {!isLoading && !isDebouncing && (
           <Pagination
@@ -103,12 +152,27 @@ const CatalogPage = () => {
 
 export const Route = createFileRoute('/')({
   component: CatalogPage,
-  loader: async (params) => {
-    const { page, searchTerm }: SearchParams = params.location.search;
+  validateSearch: catalogSchema,
+  beforeLoad: (params) => {
+    const { search } = params;
+    const { data, success } = catalogSchema.safeParse(search);
+
+    if (!success) {
+      throw redirect({ to: '/', replace: true });
+    }
+
+    return data;
+  },
+  loaderDeps: ({ search }) => search,
+  loader: async ({ deps }) => {
+    const { page, searchTerm, sortBy = 'name', desc = false } = deps;
+
     const { getKits } = useKitStore.getState();
     await getKits({
       PageNumber: page,
       SearchTerm: searchTerm,
+      SortBy: sortBy,
+      IsDescending: desc,
     });
   },
 });

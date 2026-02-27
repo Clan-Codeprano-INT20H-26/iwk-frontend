@@ -36,7 +36,7 @@ const SignInPage = () => {
     const { email, password } = data;
 
     await signIn(email, password, isRememberMe)
-      .then(() => navigate({ to: '/profile', replace: true }))
+      .then(() => navigate({ to: '/profile/orders', replace: true }))
       .catch((error) => {
         setError('password', { message: error.response.data.message });
       });

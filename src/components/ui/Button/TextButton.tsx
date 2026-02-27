@@ -4,7 +4,10 @@ import type { ButtonPropsWithoutVariant } from './types';
 import { styled } from '@mui/material/styles';
 
 const StyledTextButton = styled(BaseButton)<MUIButtonProps>(
-  ({ size = 'medium' }) => ({
+  ({ size = 'medium', theme }) => ({
+    ...theme.typography.subtitle2,
+    color: theme.palette.text.primary,
+
     ...(size === 'small' && {
       padding: '4px 5px',
     }),

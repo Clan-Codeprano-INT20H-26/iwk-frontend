@@ -29,7 +29,7 @@ const AuthLayout = () => {
   );
 };
 
-export const Route = createFileRoute('/auth')({
+export const Route = createFileRoute('/(authLayout)')({
   component: AuthLayout,
   loader: async () => {
     const { user } = useUserStore.getState();

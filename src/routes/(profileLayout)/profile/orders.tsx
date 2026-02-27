@@ -15,6 +15,7 @@ import { OrderItem } from '@/components/OrderItem';
 import { ContainedButton } from '@/components/ui/Button';
 import toast from 'react-hot-toast';
 import { OrderService } from '@/api/orderService';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 const orderService = new OrderService();
 
@@ -125,6 +126,7 @@ const OrdersPage = () => {
               />
               <ContainedButton
                 color="success"
+                startIcon={<FileUploadIcon />}
                 onClick={() => inputRef.current?.click()}
               >
                 Import Orders CSV

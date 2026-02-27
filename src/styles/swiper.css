@@ -56,8 +56,8 @@
   height: 30px;
 }
 .swiper-button-next {
-  transform: translate(-10px, 280px);
+  transform: translate(-10px, 310px);
 }
 .swiper-button-prev {
-  transform: translate(350px, 280px);
+  transform: translate(350px, 310px);
 }

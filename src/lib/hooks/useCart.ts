@@ -1,9 +1,9 @@
 import type { Kit } from '@/types/kit';
-import type { CartItem } from '@/types/cartItem';
+import type { OrderItem } from '@/types/orderItem';
 import { useLocalStorage } from './useLocalStorage';
 
 export const useCart = () => {
-  const { value: cart, setValue: setCart } = useLocalStorage<CartItem[]>(
+  const { value: cart, setValue: setCart } = useLocalStorage<OrderItem[]>(
     'cart',
     []
   );
@@ -38,6 +38,10 @@ export const useCart = () => {
     updateQuantity(itemId, quantity - 1);
   };
 
+  const clearCart = () => {
+    setCart([]);
+  };
+
   return {
     items: cart,
     subTotal,
@@ -45,5 +49,6 @@ export const useCart = () => {
     removeItem,
     increaseQuantity,
     decreaseQuantity,
+    clearCart,
   };
 };

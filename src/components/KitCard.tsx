@@ -13,13 +13,13 @@ export const KitCard = ({ id, name, price, seller, images }: KitCardProps) => {
   const navigate = useNavigate();
 
   return (
-    <Card sx={{ maxWidth: '450px' }}>
+    <Card sx={{ maxWidth: '350px' }}>
       <CardActionArea
         disableRipple
         disableTouchRipple
         onClick={() => navigate({ to: `/kits/${id}`, params: { kitId: id } })}
       >
-        <CardMedia component="img" height={420} alt={name} image={images[0]} />
+        <CardMedia component="img" height={350} alt={name} image={images[0]} />
         <CardContent>
           <Typography variant="subtitle1">{name}</Typography>
           <Typography variant="body2" color="text.secondary">

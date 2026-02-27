@@ -65,7 +65,7 @@ export const Header = ({ currentPage, handleSearch }: HeaderProps) => {
           </IconButton>
           {user ? (
             <IconButton
-              onClick={() => navigate({ to: '/profile' })}
+              onClick={() => navigate({ to: '/profile/orders' })}
               sx={{ p: 0 }}
             >
               <Avatar

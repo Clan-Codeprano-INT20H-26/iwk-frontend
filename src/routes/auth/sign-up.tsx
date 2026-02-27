@@ -34,7 +34,7 @@ const SignUpPage = () => {
     const { username, email, password } = data;
 
     await signUp(username, email, password).then(() =>
-      navigate({ to: '/profile', replace: true })
+      navigate({ to: '/profile/orders', replace: true })
     );
   };
 

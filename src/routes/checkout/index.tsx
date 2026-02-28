@@ -146,11 +146,13 @@ const CheckoutPage = () => {
             mapDialogOpen={mapDialogOpen}
             setMapDialogOpen={setMapDialogOpen}
           />
-          <OrderSummary
-            isCheckout
-            taxPercent={taxPercent}
-            onConfirmAndPay={handleSubmit(onSubmit)}
-          />
+          <Stack sx={{ pt: '40px' }}>
+            <OrderSummary
+              isCheckout
+              taxPercent={taxPercent}
+              onConfirmAndPay={handleSubmit(onSubmit)}
+            />
+          </Stack>
         </FormProvider>
         {isSubmitting && <PageLoader open={isSubmitting} />}
       </Stack>

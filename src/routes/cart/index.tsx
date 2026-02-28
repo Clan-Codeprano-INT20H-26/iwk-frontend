@@ -13,18 +13,22 @@ const CartPage = () => {
   return (
     <>
       <Header currentPage="cart" />
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-around',
-          padding: '80px 196px',
-        }}
+      <Stack
+        gap={10}
+        justifyContent="space-around"
+        sx={{ padding: '80px 150px' }}
       >
         <Stack>
-          <Typography variant="h2" sx={{ marginBottom: '32px' }}>
+          <Typography variant="h3" sx={{ marginBottom: '32px' }}>
             Cart
           </Typography>
-          <Box>
+          <Box
+            sx={{
+              maxHeight: 500,
+              overflowY: 'auto',
+              p: 2,
+            }}
+          >
             <Stack direction="column" spacing={4} alignItems="stretch">
               {items.length > 0 ? (
                 items.map((item) => <CartItem key={item.id} {...item} />)
@@ -36,12 +40,8 @@ const CartPage = () => {
             </Stack>
           </Box>
         </Stack>
-        <Box>
-          <Stack direction="column">
-            <OrderSummary />
-          </Stack>
-        </Box>
-      </Box>
+        <OrderSummary />
+      </Stack>
     </>
   );
 };

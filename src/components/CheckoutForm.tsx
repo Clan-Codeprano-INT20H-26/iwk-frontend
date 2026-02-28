@@ -1,7 +1,6 @@
-import 'mapbox-gl/dist/mapbox-gl.css';
 import { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import type { MapMouseEvent } from 'mapbox-gl';
+import { useFormContext, useWatch } from 'react-hook-form';
+import type { MapMouseEvent, MapTouchEvent } from 'mapbox-gl';
 import Map, { Marker, type MarkerDragEvent } from 'react-map-gl/mapbox';
 import { CardElement } from '@stripe/react-stripe-js';
 import { nyBounds, nyCenter } from '@/constants/nyBounds';
@@ -33,15 +32,25 @@ export const CheckoutForm = ({
   setMapDialogOpen,
 }: CheckoutProps) => {
   const {
+    control,
     register,
     setValue,
     formState: { errors },
   } = useFormContext<CheckoutSchema>();
 
+  const latitude = useWatch({ control, name: 'latitude' });
+  const longitude = useWatch({ control, name: 'longitude' });
+
   const [currentLat, setCurrentLat] = useState<number | null>(null);
   const [currentLng, setCurrentLng] = useState<number | null>(null);
 
-  const handleMapClick = (e: MapMouseEvent) => {
+  const isDisabledConfirmLocation =
+    !currentLat ||
+    !currentLng ||
+    currentLat.toFixed(6) === latitude ||
+    currentLng.toFixed(6) === longitude;
+
+  const handleMapClick = (e: MapMouseEvent | MapTouchEvent) => {
     e.preventDefault();
     const { lat: newLat, lng: newLng } = e.lngLat;
     setCurrentLat(newLat);
@@ -174,6 +183,7 @@ export const CheckoutForm = ({
             }}
             doubleClickZoom={false}
             onDblClick={handleMapClick}
+            onTouchEnd={handleMapClick}
             renderWorldCopies={false}
             maxBounds={nyBounds}
             style={{ height: 700 }}
@@ -205,7 +215,7 @@ export const CheckoutForm = ({
           <ContainedButton
             loading={isLoading}
             onClick={handleConfirmLocation}
-            disabled={!currentLat || !currentLng}
+            disabled={isDisabledConfirmLocation}
           >
             Confirm location
           </ContainedButton>

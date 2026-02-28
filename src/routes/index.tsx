@@ -32,8 +32,8 @@ const catalogSchema = z.object({
 const sortOptions = [
   { value: '+name', label: 'Name: A to Z' },
   { value: '-name', label: 'Name: Z to A' },
-  { value: '+price', label: 'Price: High to Low  ' },
-  { value: '-price', label: 'Price: Low to High' },
+  { value: '-price', label: 'Price: High to Low  ' },
+  { value: '+price', label: 'Price: Low to High' },
 ] as const;
 
 type SortOptionValue = (typeof sortOptions)[number]['value'];

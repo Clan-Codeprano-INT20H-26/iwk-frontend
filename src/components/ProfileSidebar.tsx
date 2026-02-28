@@ -66,6 +66,8 @@ export const ProfileSidebar = () => {
         } catch {
           setUser({ ...user, avatar: user?.avatar });
           toast.error('Failed to update avatar!');
+        } finally {
+          e.target.value = '';
         }
       };
       reader.readAsDataURL(file);

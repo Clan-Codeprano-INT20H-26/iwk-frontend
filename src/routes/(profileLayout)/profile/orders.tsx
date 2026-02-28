@@ -19,13 +19,13 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 const orderService = new OrderService();
 
-export type SortCriteria = 'createdAt' | 'totalAmount';
+export type SortCriteria = 'date' | 'price';
 
 const sortOptions = [
-  { value: '-createdAt', label: 'Date: Newest first' },
-  { value: '+createdAt', label: 'Date: Oldest first' },
-  { value: '-totalAmount', label: 'Total: High to low' },
-  { value: '+totalAmount', label: 'Total: Low to high' },
+  { value: '-date', label: 'Date: Newest first' },
+  { value: '+date', label: 'Date: Oldest first' },
+  { value: '-price', label: 'Total: High to low' },
+  { value: '+price', label: 'Total: Low to high' },
 ] as const;
 
 type SortOptionValue = (typeof sortOptions)[number]['value'];
@@ -40,7 +40,7 @@ const OrdersPage = () => {
 
   const [isUploading, setIsUploading] = useState(false);
   const [pageNumber, setPageNumber] = useState(initialPageNumber);
-  const [sortBy, setSortBy] = useState<SortOptionValue>('-createdAt');
+  const [sortBy, setSortBy] = useState<SortOptionValue>('-date');
   const [fromDate, setFromDate] = useState<Dayjs | null>(null);
   const [toDate, setToDate] = useState<Dayjs | null>(null);
   const [minDate, setMinDate] = useState<Dayjs>(dayjs());
@@ -65,6 +65,7 @@ const OrdersPage = () => {
           toast.error('Failed to update CSV file!');
         } finally {
           setIsUploading(false);
+          e.target.value = '';
         }
       };
       reader.readAsDataURL(file);

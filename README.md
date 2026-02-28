@@ -101,7 +101,7 @@ The UI is responsive on **laptop** and **desktop** viewports. Layout and spacing
 
 Copy variables from `.env.example` to `.env` and set:
 
-- `VITE_API_URL` –"https://backend-5zqo.onrender.com (For local development, use http://localhost:8080)
+- `VITE_API_URL` – https://backend-5zqo.onrender.com (For local development, use http://localhost:8080)
 - `VITE_STRIPE_PUBLISHABLE_KEY` - pk_test_51T3vN3CY1WHHM8WZS1aQBHrjiP7cvFzDj7EZ8m3CSK8CKxls1dtdMTpFrXwHp4TxRSPF4INVRqvhZHxAj6s0hGQw00safECPhU
 - `VITE_MAPBOX_ACCESS_TOKEN` - pk.eyJ1IjoiZWNjaGlncmlsbCIsImEiOiJjbW0ybnV0czUwYWdhMnByMjNsaGNkcnNnIn0.MyVZ8p7ZiHqsGvsBKJUYnQ
 

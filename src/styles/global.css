@@ -1,3 +1,7 @@
+@import 'mapbox-gl/dist/mapbox-gl.css';
+@import './swiper.css';
+@import './link.css';
+
 * {
   box-sizing: border-box;
   padding: 0;

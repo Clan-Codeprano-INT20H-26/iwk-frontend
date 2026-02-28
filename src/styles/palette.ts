@@ -1,16 +1,16 @@
 export const defaultPalette = {
   primary: {
-    main: '#4F46E5', // Indigo 600
-    dark: '#3730A3', // Indigo 800
-    light: '#A5B4FC', // Indigo 300
+    main: '#4F46E5',
+    dark: '#3730A3',
+    light: '#A5B4FC',
     outlineBorder: '#6366F1',
     contrastText: '#FFFFFF',
   },
   secondary: {
-    main: '#0F172A', // Slate 900
-    dark: '#020617',
-    light: '#334155',
-    contrastText: '#FFFFFF',
+    main: '#FAFBFF',
+    dark: '#F5F7FF',
+    light: '#FFFFFF',
+    contrastText: '#0F172A',
   },
   common: {
     white: '#FFFFFF',

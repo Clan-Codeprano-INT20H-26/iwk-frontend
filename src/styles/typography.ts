@@ -1,7 +1,7 @@
 import type { TypographyVariantsOptions } from '@mui/material/styles';
 
 export const defaultTypography: TypographyVariantsOptions = {
-  fontFamily: 'Roboto',
+  fontFamily: '"Work Sans", "Helvetica", "Arial", sans-serif',
   h1: {
     fontSize: 96,
     fontWeight: 600,

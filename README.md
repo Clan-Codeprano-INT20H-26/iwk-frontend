@@ -113,6 +113,17 @@ Copy variables from `.env.example` to `.env` and set:
 
 ---
 
+### Test payment cards (Stripe)
+
+Use these cards at checkout for **successful** payments (any CVC and any future expiration date):
+
+| Brand          | Number              |
+| -------------- | ------------------- |
+| **Visa**       | 4242 4242 4242 4242 |
+| **Mastercard** | 5555 5555 5555 4444 |
+
+---
+
 ## CSV Testing
 
 For import CSV testing purposes prefer using prepared file: **[orders.csv](https://github.com/Clan-Codeprano-INT20H-26/iwk-frontend/blob/main/orders.csv)**

@@ -52,7 +52,7 @@ const CheckoutPage = () => {
     quantity: item.quantity,
   }));
 
-  const onPaymentComplete = async () => {
+  const handlePaymentComplete = async () => {
     try {
       const order = await orderService.createOrder({
         latitude,
@@ -73,13 +73,13 @@ const CheckoutPage = () => {
       });
 
       if (!stripe || !elements) {
-        onPaymentComplete();
+        handlePaymentComplete();
         return;
       }
 
       const cardEl = elements.getElement(CardElement);
       if (!cardEl) {
-        onPaymentComplete();
+        handlePaymentComplete();
         return;
       }
 
@@ -99,7 +99,7 @@ const CheckoutPage = () => {
       }
 
       if (order.paymentIntent?.status === 'succeeded') {
-        onPaymentComplete();
+        handlePaymentComplete();
         return;
       }
     } catch {

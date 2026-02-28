@@ -9,38 +9,212 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as profileLayoutRouteRouteImport } from './routes/(profileLayout)/route'
+import { Route as authLayoutRouteRouteImport } from './routes/(authLayout)/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OrderIndexRouteImport } from './routes/order/index'
+import { Route as CheckoutIndexRouteImport } from './routes/checkout/index'
+import { Route as CartIndexRouteImport } from './routes/cart/index'
+import { Route as KitsKitIdRouteImport } from './routes/kits/$kitId'
+import { Route as profileLayoutProfileIndexRouteImport } from './routes/(profileLayout)/profile/index'
+import { Route as authLayoutAuthIndexRouteImport } from './routes/(authLayout)/auth/index'
+import { Route as profileLayoutProfileWishlistRouteImport } from './routes/(profileLayout)/profile/wishlist'
+import { Route as profileLayoutProfileRecentlyViewedRouteImport } from './routes/(profileLayout)/profile/recently-viewed'
+import { Route as profileLayoutProfileOrdersRouteImport } from './routes/(profileLayout)/profile/orders'
+import { Route as authLayoutAuthSignUpRouteImport } from './routes/(authLayout)/auth/sign-up'
+import { Route as authLayoutAuthSignInRouteImport } from './routes/(authLayout)/auth/sign-in'
 
+const profileLayoutRouteRoute = profileLayoutRouteRouteImport.update({
+  id: '/(profileLayout)',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const authLayoutRouteRoute = authLayoutRouteRouteImport.update({
+  id: '/(authLayout)',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OrderIndexRoute = OrderIndexRouteImport.update({
+  id: '/order/',
+  path: '/order/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutIndexRoute = CheckoutIndexRouteImport.update({
+  id: '/checkout/',
+  path: '/checkout/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CartIndexRoute = CartIndexRouteImport.update({
+  id: '/cart/',
+  path: '/cart/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KitsKitIdRoute = KitsKitIdRouteImport.update({
+  id: '/kits/$kitId',
+  path: '/kits/$kitId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const profileLayoutProfileIndexRoute =
+  profileLayoutProfileIndexRouteImport.update({
+    id: '/profile/',
+    path: '/profile/',
+    getParentRoute: () => profileLayoutRouteRoute,
+  } as any)
+const authLayoutAuthIndexRoute = authLayoutAuthIndexRouteImport.update({
+  id: '/auth/',
+  path: '/auth/',
+  getParentRoute: () => authLayoutRouteRoute,
+} as any)
+const profileLayoutProfileWishlistRoute =
+  profileLayoutProfileWishlistRouteImport.update({
+    id: '/profile/wishlist',
+    path: '/profile/wishlist',
+    getParentRoute: () => profileLayoutRouteRoute,
+  } as any)
+const profileLayoutProfileRecentlyViewedRoute =
+  profileLayoutProfileRecentlyViewedRouteImport.update({
+    id: '/profile/recently-viewed',
+    path: '/profile/recently-viewed',
+    getParentRoute: () => profileLayoutRouteRoute,
+  } as any)
+const profileLayoutProfileOrdersRoute =
+  profileLayoutProfileOrdersRouteImport.update({
+    id: '/profile/orders',
+    path: '/profile/orders',
+    getParentRoute: () => profileLayoutRouteRoute,
+  } as any)
+const authLayoutAuthSignUpRoute = authLayoutAuthSignUpRouteImport.update({
+  id: '/auth/sign-up',
+  path: '/auth/sign-up',
+  getParentRoute: () => authLayoutRouteRoute,
+} as any)
+const authLayoutAuthSignInRoute = authLayoutAuthSignInRouteImport.update({
+  id: '/auth/sign-in',
+  path: '/auth/sign-in',
+  getParentRoute: () => authLayoutRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/kits/$kitId': typeof KitsKitIdRoute
+  '/cart/': typeof CartIndexRoute
+  '/checkout/': typeof CheckoutIndexRoute
+  '/order/': typeof OrderIndexRoute
+  '/auth/sign-in': typeof authLayoutAuthSignInRoute
+  '/auth/sign-up': typeof authLayoutAuthSignUpRoute
+  '/profile/orders': typeof profileLayoutProfileOrdersRoute
+  '/profile/recently-viewed': typeof profileLayoutProfileRecentlyViewedRoute
+  '/profile/wishlist': typeof profileLayoutProfileWishlistRoute
+  '/auth/': typeof authLayoutAuthIndexRoute
+  '/profile/': typeof profileLayoutProfileIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/kits/$kitId': typeof KitsKitIdRoute
+  '/cart': typeof CartIndexRoute
+  '/checkout': typeof CheckoutIndexRoute
+  '/order': typeof OrderIndexRoute
+  '/auth/sign-in': typeof authLayoutAuthSignInRoute
+  '/auth/sign-up': typeof authLayoutAuthSignUpRoute
+  '/profile/orders': typeof profileLayoutProfileOrdersRoute
+  '/profile/recently-viewed': typeof profileLayoutProfileRecentlyViewedRoute
+  '/profile/wishlist': typeof profileLayoutProfileWishlistRoute
+  '/auth': typeof authLayoutAuthIndexRoute
+  '/profile': typeof profileLayoutProfileIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/(authLayout)': typeof authLayoutRouteRouteWithChildren
+  '/(profileLayout)': typeof profileLayoutRouteRouteWithChildren
+  '/kits/$kitId': typeof KitsKitIdRoute
+  '/cart/': typeof CartIndexRoute
+  '/checkout/': typeof CheckoutIndexRoute
+  '/order/': typeof OrderIndexRoute
+  '/(authLayout)/auth/sign-in': typeof authLayoutAuthSignInRoute
+  '/(authLayout)/auth/sign-up': typeof authLayoutAuthSignUpRoute
+  '/(profileLayout)/profile/orders': typeof profileLayoutProfileOrdersRoute
+  '/(profileLayout)/profile/recently-viewed': typeof profileLayoutProfileRecentlyViewedRoute
+  '/(profileLayout)/profile/wishlist': typeof profileLayoutProfileWishlistRoute
+  '/(authLayout)/auth/': typeof authLayoutAuthIndexRoute
+  '/(profileLayout)/profile/': typeof profileLayoutProfileIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/kits/$kitId'
+    | '/cart/'
+    | '/checkout/'
+    | '/order/'
+    | '/auth/sign-in'
+    | '/auth/sign-up'
+    | '/profile/orders'
+    | '/profile/recently-viewed'
+    | '/profile/wishlist'
+    | '/auth/'
+    | '/profile/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/kits/$kitId'
+    | '/cart'
+    | '/checkout'
+    | '/order'
+    | '/auth/sign-in'
+    | '/auth/sign-up'
+    | '/profile/orders'
+    | '/profile/recently-viewed'
+    | '/profile/wishlist'
+    | '/auth'
+    | '/profile'
+  id:
+    | '__root__'
+    | '/'
+    | '/(authLayout)'
+    | '/(profileLayout)'
+    | '/kits/$kitId'
+    | '/cart/'
+    | '/checkout/'
+    | '/order/'
+    | '/(authLayout)/auth/sign-in'
+    | '/(authLayout)/auth/sign-up'
+    | '/(profileLayout)/profile/orders'
+    | '/(profileLayout)/profile/recently-viewed'
+    | '/(profileLayout)/profile/wishlist'
+    | '/(authLayout)/auth/'
+    | '/(profileLayout)/profile/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  authLayoutRouteRoute: typeof authLayoutRouteRouteWithChildren
+  profileLayoutRouteRoute: typeof profileLayoutRouteRouteWithChildren
+  KitsKitIdRoute: typeof KitsKitIdRoute
+  CartIndexRoute: typeof CartIndexRoute
+  CheckoutIndexRoute: typeof CheckoutIndexRoute
+  OrderIndexRoute: typeof OrderIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/(profileLayout)': {
+      id: '/(profileLayout)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof profileLayoutRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(authLayout)': {
+      id: '/(authLayout)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof authLayoutRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +222,128 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/order/': {
+      id: '/order/'
+      path: '/order'
+      fullPath: '/order/'
+      preLoaderRoute: typeof OrderIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout/': {
+      id: '/checkout/'
+      path: '/checkout'
+      fullPath: '/checkout/'
+      preLoaderRoute: typeof CheckoutIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cart/': {
+      id: '/cart/'
+      path: '/cart'
+      fullPath: '/cart/'
+      preLoaderRoute: typeof CartIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kits/$kitId': {
+      id: '/kits/$kitId'
+      path: '/kits/$kitId'
+      fullPath: '/kits/$kitId'
+      preLoaderRoute: typeof KitsKitIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(profileLayout)/profile/': {
+      id: '/(profileLayout)/profile/'
+      path: '/profile'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof profileLayoutProfileIndexRouteImport
+      parentRoute: typeof profileLayoutRouteRoute
+    }
+    '/(authLayout)/auth/': {
+      id: '/(authLayout)/auth/'
+      path: '/auth'
+      fullPath: '/auth/'
+      preLoaderRoute: typeof authLayoutAuthIndexRouteImport
+      parentRoute: typeof authLayoutRouteRoute
+    }
+    '/(profileLayout)/profile/wishlist': {
+      id: '/(profileLayout)/profile/wishlist'
+      path: '/profile/wishlist'
+      fullPath: '/profile/wishlist'
+      preLoaderRoute: typeof profileLayoutProfileWishlistRouteImport
+      parentRoute: typeof profileLayoutRouteRoute
+    }
+    '/(profileLayout)/profile/recently-viewed': {
+      id: '/(profileLayout)/profile/recently-viewed'
+      path: '/profile/recently-viewed'
+      fullPath: '/profile/recently-viewed'
+      preLoaderRoute: typeof profileLayoutProfileRecentlyViewedRouteImport
+      parentRoute: typeof profileLayoutRouteRoute
+    }
+    '/(profileLayout)/profile/orders': {
+      id: '/(profileLayout)/profile/orders'
+      path: '/profile/orders'
+      fullPath: '/profile/orders'
+      preLoaderRoute: typeof profileLayoutProfileOrdersRouteImport
+      parentRoute: typeof profileLayoutRouteRoute
+    }
+    '/(authLayout)/auth/sign-up': {
+      id: '/(authLayout)/auth/sign-up'
+      path: '/auth/sign-up'
+      fullPath: '/auth/sign-up'
+      preLoaderRoute: typeof authLayoutAuthSignUpRouteImport
+      parentRoute: typeof authLayoutRouteRoute
+    }
+    '/(authLayout)/auth/sign-in': {
+      id: '/(authLayout)/auth/sign-in'
+      path: '/auth/sign-in'
+      fullPath: '/auth/sign-in'
+      preLoaderRoute: typeof authLayoutAuthSignInRouteImport
+      parentRoute: typeof authLayoutRouteRoute
+    }
   }
 }
 
+interface authLayoutRouteRouteChildren {
+  authLayoutAuthSignInRoute: typeof authLayoutAuthSignInRoute
+  authLayoutAuthSignUpRoute: typeof authLayoutAuthSignUpRoute
+  authLayoutAuthIndexRoute: typeof authLayoutAuthIndexRoute
+}
+
+const authLayoutRouteRouteChildren: authLayoutRouteRouteChildren = {
+  authLayoutAuthSignInRoute: authLayoutAuthSignInRoute,
+  authLayoutAuthSignUpRoute: authLayoutAuthSignUpRoute,
+  authLayoutAuthIndexRoute: authLayoutAuthIndexRoute,
+}
+
+const authLayoutRouteRouteWithChildren = authLayoutRouteRoute._addFileChildren(
+  authLayoutRouteRouteChildren,
+)
+
+interface profileLayoutRouteRouteChildren {
+  profileLayoutProfileOrdersRoute: typeof profileLayoutProfileOrdersRoute
+  profileLayoutProfileRecentlyViewedRoute: typeof profileLayoutProfileRecentlyViewedRoute
+  profileLayoutProfileWishlistRoute: typeof profileLayoutProfileWishlistRoute
+  profileLayoutProfileIndexRoute: typeof profileLayoutProfileIndexRoute
+}
+
+const profileLayoutRouteRouteChildren: profileLayoutRouteRouteChildren = {
+  profileLayoutProfileOrdersRoute: profileLayoutProfileOrdersRoute,
+  profileLayoutProfileRecentlyViewedRoute:
+    profileLayoutProfileRecentlyViewedRoute,
+  profileLayoutProfileWishlistRoute: profileLayoutProfileWishlistRoute,
+  profileLayoutProfileIndexRoute: profileLayoutProfileIndexRoute,
+}
+
+const profileLayoutRouteRouteWithChildren =
+  profileLayoutRouteRoute._addFileChildren(profileLayoutRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  authLayoutRouteRoute: authLayoutRouteRouteWithChildren,
+  profileLayoutRouteRoute: profileLayoutRouteRouteWithChildren,
+  KitsKitIdRoute: KitsKitIdRoute,
+  CartIndexRoute: CartIndexRoute,
+  CheckoutIndexRoute: CheckoutIndexRoute,
+  OrderIndexRoute: OrderIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

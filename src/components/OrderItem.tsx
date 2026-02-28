@@ -107,6 +107,8 @@ export const OrderItem = (order: Order) => {
     compositeTaxRate,
     totalAmount,
     taxes,
+    latitude,
+    longitude,
   } = order;
 
   const jurisdictions =
@@ -149,6 +151,14 @@ export const OrderItem = (order: Order) => {
             </Typography>
             <Typography variant="subtitle1" noWrap>
               {id}
+            </Typography>
+          </Stack>
+          <Stack gap={0.25} sx={{ mt: 0.5 }}>
+            <Typography variant="caption" color="text.secondary">
+              Latitude: <b>{latitude}</b>
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              Longitude: <b>{longitude}</b>
             </Typography>
           </Stack>
           <Stack direction="row" gap={2} alignItems="center">
